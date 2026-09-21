@@ -6,15 +6,15 @@
       version="2.0">
 <channel>
 <title>Aadhav Rajesh</title>
-<link>https://YOURDOMAIN.com/writing.html</link>
-<atom:link href="https://YOURDOMAIN.com/writing.xml" rel="self" type="application/rss+xml"/>
+<link>https://www.aadhavrajesh.com/writing.html</link>
+<atom:link href="https://www.aadhavrajesh.com/writing.xml" rel="self" type="application/rss+xml"/>
 <description>Notes on measurement in the economics of AI.</description>
 <generator>quarto-1.10.18</generator>
 <lastBuildDate>Sat, 19 Sep 2026 04:00:00 GMT</lastBuildDate>
 <item>
   <title>Prompting LLMs in the Arabic script is 2x cheaper if you speak Arabic vs. Acehnese.</title>
   <dc:creator>Aadhav Rajesh</dc:creator>
-  <link>https://YOURDOMAIN.com/posts/token-premium/</link>
+  <link>https://www.aadhavrajesh.com/posts/token-premium/</link>
   <description><![CDATA[ 
 
 
@@ -29,7 +29,7 @@
 <div id="fig-scripts" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-scripts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://YOURDOMAIN.com/posts/token-premium/figs/4_tokens_per_char.png" id="fig-scripts" class="img-fluid figure-img">
+<img src="https://www.aadhavrajesh.com/posts/token-premium/figs/4_tokens_per_char.png" id="fig-scripts" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-scripts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1
@@ -240,7 +240,7 @@ Figure&nbsp;4
 <div id="fig-allocation" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-allocation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://YOURDOMAIN.com/posts/token-premium/figs/3_allocation.png" id="fig-allocation" class="img-fluid figure-img">
+<img src="https://www.aadhavrajesh.com/posts/token-premium/figs/3_allocation.png" id="fig-allocation" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-allocation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5
@@ -269,9 +269,9 @@ Figure&nbsp;5
 </section></div> ]]></description>
   <category>tokenomics</category>
   <category>AI</category>
-  <guid>https://YOURDOMAIN.com/posts/token-premium/</guid>
+  <guid>https://www.aadhavrajesh.com/posts/token-premium/</guid>
   <pubDate>Sat, 19 Sep 2026 04:00:00 GMT</pubDate>
-  <media:content url="https://YOURDOMAIN.com/posts/token-premium/figs/4_tokens_per_char.png" medium="image" type="image/png" height="105" width="144"/>
+  <media:content url="https://www.aadhavrajesh.com/posts/token-premium/figs/4_tokens_per_char.png" medium="image" type="image/png" height="105" width="144"/>
 </item>
 </channel>
 </rss>

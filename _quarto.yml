@@ -6,8 +6,9 @@ project:
 
 website:
   title: "Aadhav Rajesh"
+  favicon: profile.jpg
   description: "Notes on measurement in the economics of AI."
-  site-url: https://YOURDOMAIN.com
+  site-url: https://www.aadhavrajesh.com
   navbar:
     right:
       - text: Writing
