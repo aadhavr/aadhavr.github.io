@@ -121,7 +121,7 @@ Politics can redraw a map in a decade. The friendships an empire drew have laste
 For anyone who wants to check the numbers, @tbl-results reports the models behind every estimate in this post. The text reports each coefficient *b* as a multiple, exp(*b*): the 0.752 for French siblings in column 3, for example, is the 2.1 times above.
 
 ::: {#tbl-results .column-page}
-{{< include regression_table.md >}}
+{{< include _regression_table.md >}}
 
 Regression results.
 :::
