@@ -10,5 +10,11 @@
   },
   "writing.qmd": {
     "writing.html": "7e99e18c"
+  },
+  "posts/sci-colonial/index.qmd": {
+    "index.html": "21f21364"
+  },
+  "posts/sci-colonial/regression_table.md": {
+    "regression_table.html": "3160ae12"
   }
 }

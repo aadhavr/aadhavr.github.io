@@ -14,8 +14,7 @@ toc: false
 
 # Aadhav Rajesh
 
-I'm an undergraduate at Georgetown University studying political economy. I'm interested in the political economy of development and the economics of tokenization
-and AI access.
+I'm an undergraduate at Georgetown University studying political economy. I'm interested in the political economy of development, cost structures of AI inference / tokenomics, and economic history.
 
 This summer, I was a field research intern for [gui2de](https://gui2de.georgetown.edu) and the [What Works Hub for Global Education](https://www.wwhge.org/what-we-do/tanzania) in Dar es Salaam, Tanzania,
 embedded at the Tanzania Institute of Education. I'm also a Research Assistant for Professor Shareen Joshi, currently co-authoring and preparing a manuscript for journal submission.
