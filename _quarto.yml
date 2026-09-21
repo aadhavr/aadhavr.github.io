@@ -1,0 +1,44 @@
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - CNAME          # keeps the custom domain across republishes
+
+website:
+  title: "Aadhav Rajesh"
+  description: "Notes on measurement in the economics of AI."
+  site-url: https://YOURDOMAIN.com
+  navbar:
+    right:
+      - text: Writing
+        href: writing.qmd
+      - text: CV
+        href: cv.pdf
+      - icon: github
+        href: https://github.com/aadhavr
+  page-footer:
+    left: "&copy; 2026 Aadhav Rajesh"
+    right: "[Source](https://github.com/aadhavr/aadhavr.github.io)"
+
+format:
+  html:
+    theme: custom.scss
+    toc: true
+    toc-depth: 2
+    toc-title: "On this page"
+    code-copy: true
+    fig-cap-location: bottom
+    link-external-newwindow: true
+    anchor-sections: true
+    smooth-scroll: false
+    citations-hover: true
+    footnotes-hover: true
+    grid:
+      body-width: 690px
+      sidebar-width: 200px
+      margin-width: 180px
+
+execute:
+  freeze: auto
+  echo: false
+  warning: false
