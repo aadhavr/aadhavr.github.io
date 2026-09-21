@@ -102,20 +102,7 @@ Sumatra unrelated to Arabic, which uses an Arabic-based script, you may
 spend nearly twice the token cost compared to an Arabic speaker, despite
 using the same Arabic script.
 
-This is economically significant beyond the literary implications of it
-because tokens have become the de facto currency of AI. Commercial LLMs use
-tokens to price their APIs, and retail-facing AI apps use tokens to measure
-context limits. In both cases, tokenization drives a wedge between nominal
-metrics and real consumption. For pay-as-you-go developers, variations in
-token cost based on language/script force non-English queries to pay higher
-real marginal costs for identical computational work. For flat-fee retail
-subscribers, the same inefficiency acts as a non-price rationing, where
-communicating in a non-English language quietly shrinks your working memory
-and exhausts LLM capacity earlier. So if you have 200,000 tokens for an LLM,
-what you can do and how long you can work with your LLM vary based on your
-language and script. A developer pays 5x for the same request and a
-subscriber's 200,000-token window is worth about 20,000 tokens because they
-speak Tamasheq and write in their traditional script.
+This is economically significant because tokens have become the de facto currency of AI. Commercial LLMs use tokens to price their APIs, and retail-facing AI apps use tokens to measure context limits. In both cases, tokenization drives a wedge between nominal metrics and real consumption. For pay-as-you-go developers, variations in token cost based on language/script force non-English queries to pay higher real marginal costs for identical computational work. For flat-fee retail subscribers, the same inefficiency acts as a non-price rationing, where communicating in a non-English language quietly shrinks your working memory and exhausts LLM capacity earlier. So if you have 200,000 tokens for an LLM, what you can do and how long you can work with your LLM vary based on your language and script. A developer pays 5x for the same request and a subscriber's 200,000-token window is worth about 19,691 tokens because they speak Tamasheq and write in their traditional script.
 
 The data used below comes from FLORES-200, a dataset of 1,012 sentences,
 professionally translated and aligned across 203 language-script pairs, so
@@ -272,12 +259,7 @@ Under GPT-2, 41.4% of languages cost more than 3x English. Under o200k,
 7.4%. Under NLLB, 0.0%. Worth noting the trend in the other direction: under
 mT5 and NLLB a handful of languages cost less than English.
 
-The consequence a consumer feels is that a 200,000-token context window
-holds about 200,000 tokens' worth of English content, 33,505 of Tigrinya,
-19,691 of Tamasheq in Tifinagh, and 14,506 of Santali — a ration of
-one-thirteenth of the capacity for Santali. Similarly, a developer paying
-per token for an LLM's API faces a markup. Neither would see a line item in
-their invoice attributing it to the script they write in.
+The consequence a consumer feels is that a 200,000-token context window holds about 200,000 tokens' worth of English content, 33,505 of Tigrinya, 19,691 of Tamasheq in Tifinagh, and 14,506 of Santali. Same subscription, but a ration of one-thirteenth of the capacity for Santali speakers. Similarly, a developer paying per token for an LLM’s API faces a markup. Neither would see a line item in their invoice attributing it to the script they write in.
 
 ## Doubling the vocabulary helped almost everyone
 
@@ -364,12 +346,7 @@ and capability differential across populations. Given how transformative
 LLMs have been and will continue to be, the cost and capability differential
 could have significant effects on LLM adoption.
 
-I did try to test whether any of this shows up in observed adoption, using
-Anthropic's Economic Index, which reports Claude usage by country normalized
-by working-age population. But the index covers 121 countries whose
-population-weighted premiums run from 1.0x to 3.4x, with 90% below 1.7x.
-Every country above 3.4x reports no usage data at all — Laos at 8.4x, Bhutan
-at 7.5x, Myanmar, Eritrea.[^adoption]
+I did try to test whether any of this shows up in observed adoption, using Anthropic's Economic Index, which reports Claude usage by country normalized by working-age population. But the index covers 121 countries whose population-weighted premiums run from 1.0x to 3.4x, with 90% below 1.7x. Every country above 3.4x reports no usage data at all (e.g., Laos at 8.4x, Bhutan at 7.5x, Myanmar, Eritrea).[^adoption]
 
 The populations paying this cost are not in the rooms where the training
 corpus is assembled, and they are not in the data afterward.
