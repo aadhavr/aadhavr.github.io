@@ -10,7 +10,497 @@
 <atom:link href="https://www.aadhavrajesh.com/writing.xml" rel="self" type="application/rss+xml"/>
 <description>Notes on measurement in the economics of AI.</description>
 <generator>quarto-1.10.18</generator>
-<lastBuildDate>Sat, 19 Sep 2026 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 21 Sep 2026 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Empires and Friendships</title>
+  <dc:creator>Aadhav Rajesh</dc:creator>
+  <link>https://www.aadhavrajesh.com/posts/sci-colonial/</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Earlier this year, I stumbled on a very cool dataset called the Social Connectedness Index (SCI) from January 2026, which measures the probability that two Facebook users in two countries are friends, for 177 countries and 15,576 country pairs. I combine it with CEPII’s gravity dataset for distance, borders, language and religion; the UN’s 2024 bilateral migrant stocks; and COLDAT, a dataset of which European empire ruled where, and until when.<sup>1</sup></p>
+<p>Go ahead and look at Senegal in Figure&nbsp;1.</p>
+<div id="fig-friends" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-friends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<iframe src="figs/1_friend_picker.html" width="100%" height="600" style="border:none;">
+</iframe>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-friends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Friendship ties relative to prediction. Click any country.<sup>2</sup>
+</figcaption>
+</figure>
+</div>
+<p>Countries that are close together, share a border, share a language or share a religion tend to have more friendships between them. I fit a model across the 14,535 country pairs (171 countries) with complete data on these factors, and then uses them to predict how connected any two countries should be.</p>
+<p>The model also accounts for each country’s overall level of Facebook use, so a country does not look well connected just because many of its people are online. A value of 1 means a pair is exactly as connected as those factors predict. A value of 3 means three times as connected; 0.5 means half.</p>
+<p>You’ll notice that France lights up when you click on Senegal: Senegalese Facebook users are about three times as connected to France as distance, language and religion predict. So does much of the old map of French West Africa. Mauritania sits at 3.4 times the predicted level, Côte d’Ivoire and Guinea at about 2.4, Mali at 1.6.</p>
+<p>You may also see that one neighbor stays brown: The Gambia, a former British colony almost entirely surrounded by Senegal, sits at 0.4: less than half of what the model predicts for two countries that share a long border and a religion.</p>
+<p>Now click on Ghana. Britain lights up too, at 1.5 times. But the rest of what was once British West Africa does not. Sierra Leone sits at 0.5. Nigeria, the other large English-speaking economy in the region, sits at 0.2: less than a fifth of the predicted level.</p>
+<p>Britain and France ruled West Africa for roughly the same period, left it within a few years of each other, and both left behind their language. Why would one empire leave a web of connections between its former colonies and the other leave almost none?</p>
+<p>The answer, I will argue, lies in how the two empires were run. France governed most of its West African colonies as a single federation, with one capital in Dakar, one administration and shared elite schools, and after independence most of them kept a shared currency. Britain governed Nigeria, the Gold Coast, Sierra Leone and the Gambia as four separate colonies, and each of them left their shared currency at or soon after independence. Sixty years later, the friendship data still reflects the difference in colonial administration and monetary policy.</p>
+<section id="what-we-expected-to-see" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-expected-to-see">What we expected to see</h2>
+<div id="fig-empires" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-empires-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<iframe src="figs/2_empires.html" width="100%" height="600" style="border:none;">
+</iframe>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empires-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Last European colonizer.
+</figcaption>
+</figure>
+</div>
+<p>A former colony and its former colonizer are much more connected than their distance, language and religion predict: about 3.8 times more. Some of that is simply people who moved. Once I hold the migrant population between the two countries constant, the tie is still <strong>2.2 times</strong> the predicted level. Migration explains only about 40% of it. In other words, most of the colonial tie is not from a diaspora.</p>
+<p>And that tie is not fading. The average colonial link in the data ended 106 years ago, and the links ended across more than two centuries, which makes me wonder whether older links are weaker. They are not, at least not measurably.</p>
+<p>The estimate is a 2% decline per decade, and the data rule out anything faster than about 5% per decade. At the point estimate, a colonial tie would take about four centuries to disappear.</p>
+<p>That is a sharp contrast with trade. Head, Mayer and Ries (2010) show that trade between former colonies and their colonizers declines substantially in the decades after independence.<sup>3</sup> Trade forgot about the empire, but it seems friendship, so far, has not.</p>
+</section>
+<section id="paris-and-london-about-the-same" class="level2">
+<h2 class="anchored" data-anchor-id="paris-and-london-about-the-same">Paris and London, about the same</h2>
+<p>The obvious next question is which empire left the stronger tie to its capital, for which the point estimates favor France.</p>
+<p>Former French colonies are about 2.5 times as connected to France as predicted, and former British colonies about 1.8 times as connected to Britain. But the difference is not statistically significant (p = 0.21). The data is consistent with the two empires being identical, and also with France being more than twice as strong. There are only 29 French and 58 British colonial links, which is not enough to rank them.</p>
+<p>So on this question, both imperial capitals kept their colonies close, and we cannot say which kept them closer.</p>
+</section>
+<section id="where-they-part" class="level2">
+<h2 class="anchored" data-anchor-id="where-they-part">Where they part</h2>
+<p>It gets interesting, though, when we look at the colonies themselves.</p>
+<p>Take every pair of former colonies of the same empire that became independent after 1945. Two former French colonies are <strong>2.1 times</strong> as connected as predicted. Two former British colonies are <strong>1.3 times</strong> as connected. The gap is a factor of 1.7, and it is very precisely estimated (p &lt; 0.001).</p>
+<div id="fig-network" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-network-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<iframe src="figs/3_sibling_network.html" width="100%" height="600" style="border:none;">
+</iframe>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-network-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Links between sibling colonies that beat the prediction.
+</figcaption>
+</figure>
+</div>
+<p>Now, of course francophone Africa is connected, after all they share a language. But language is already in the prediction. The comparison is between two former French colonies that share French and two former British colonies that share English. Both groups get credit for their common language, but only one of them is more connected than that baseline prediction level.</p>
+<div id="fig-hub" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hub-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<iframe src="figs/hub_spoke_scatter.html" width="100%" height="620" style="border:none;">
+</iframe>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hub-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Each colony’s ties to its capital and to its siblings.
+</figcaption>
+</figure>
+</div>
+<p>Figure&nbsp;4 plots two of these ties for each former colony: to its old capital, and to the other colonies of the same empire. Hover over a colony to see the third, its tie to the other empire’s colonies.</p>
+<p>A French colony’s tie to its siblings is well above its tie to the British side, while a British colony’s tie to its siblings is barely different from its tie to the French side. In other words, the French empire left a web, while the British empire left spokes connected to a hub.</p>
+</section>
+<section id="looking-for-a-historical-explanation" class="level2">
+<h2 class="anchored" data-anchor-id="looking-for-a-historical-explanation">Looking for a historical explanation</h2>
+<p>I argue that there are two historical explanations for this difference in social connectivity. Firstly, from how the empires were run. French West Africa was governed from Dakar until it broke into eight states at independence; French Equatorial Africa was governed the same way from Brazzaville, and broke into four.<sup>4</sup> Administrators, teachers, soldiers, and students moved between territories inside a single system. The École William Ponty, a federal school in Senegal, trained teachers, doctors and administrators from across the federation, and by Tony Chafer’s count, 11 of the 16 African deputies from French West Africa in the French National Assembly were Ponty graduates.<sup>5</sup> A generation of leaders who would run eight different countries had been classmates. In contrast, Britain ran Nigeria, the Gold Coast, Sierra Leone and the Gambia as separate colonies, each with its own governor, budget and capital.</p>
+<p>The second is money, and here the history has a twist. It is tempting to say that French colonies are connected because most of them still share a currency, the CFA franc. The model can test that: add an indicator for two countries that both use the CFA franc. It matters a lot.</p>
+<p>What’s noteworthy here is that Britain also gave its West African colonies a common currency. From 1912, the West African Currency Board issued a single currency for the Gambia, Sierra Leone, the Gold Coast and Nigeria.<sup>6</sup> At independence, every one of them left it: Ghana in 1958, Nigeria in 1959, Sierra Leone in 1964, the Gambia in 1965. Most French colonies stayed in theirs (Guinea left in 1960, but the union survived) and it still exists.<sup>7</sup></p>
+<p>So the currency union is not a confounder to be removed from the French effect. Rather, it is part of what the French empire left behind, and part of what the British colonies chose to not take with them moving forward. The CFA control considers how much more connected any two CFA members are (two CFA members are 2.4 times as connected as otherwise similar pairs) and only the connection left over after that counts toward the French empire. But Senegal and Mali share the CFA franc because they were both French colonies. The currency is part of the empire’s legacy, so this setup hands some of the empire’s effect to the currency.</p>
+<p>Despite whatever the currency explains, two former French colonies are still 1.8 times as connected as predicted, against 1.3 times for two former British colonies. So the two estimates bracket the French effect. The 2.1 connectivity measure from before counts all of the currency’s effect as imperial legacy, while the 1.8 measure counts none of it. The truth is likely somewhere in between, and on either count the French colonies are more connected than the British ones.</p>
+<p>The other obvious objection is geography. French colonies are concentrated in Africa, while British colonies are spread across Africa, Asia, the Caribbean and the Pacific. Perhaps, the French premium is really an African premium? Restricting the comparison to African pairs does the opposite of what that objection predicts: the gap between the empires gets larger, a factor of 2.0.</p>
+<div id="fig-gap" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-gap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://www.aadhavrajesh.com/posts/sci-colonial/figs/sibling_gap.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Sibling effects by empire, with 95% confidence intervals.
+</figcaption>
+</figure>
+</div>
+<p>In the Africa-only comparison, the British estimate even falls below one and is statistically significant. The comparison group is other African pairs, and shared English is already accounted for, so what it says is that between African states that speak English, a British past adds nothing.</p>
+<p>I can’t separate federation from currency from the institutions that came after independence. They are bundled together in the history and in the data. However, I am arguing that the two empires left measurably different social structures, and the difference is reflected in the histories of how these empires were run differently.</p>
+</section>
+<section id="closing-thoughts-on-these-networks" class="level2">
+<h2 class="anchored" data-anchor-id="closing-thoughts-on-these-networks">Closing thoughts on these networks</h2>
+<p>Why should anyone care about Facebook friendships? Because the Social Connectedness Index predicts trade, investment, migration and the spread of information (Bailey et al.&nbsp;2018).<sup>8</sup> A dense social network is the infrastructure through which a trader in Dakar finds a buyer in Abidjan, and how news, jobs and prices move between them.</p>
+<p>By that measure, the French empire left its colonies a regional network that still carries weight sixty years later, while the British empire left a set of separate lines to London.</p>
+<p>Facebook users are not a random sample of anyone. This is one snapshot, so the “not fading” result compares old and recent colonial links rather than following any link over time. And any dataset of empires involves judgment calls about who ruled a territory last; mine are listed below.<sup>9</sup></p>
+<p>Politics can redraw a map in a decade. The friendships an empire drew have lasted sixty years so far.</p>
+</section>
+<section id="the-regression" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="the-regression">The Regression</h2>
+<p>For anyone who wants to check the numbers, Table&nbsp;1 reports the models behind every estimate in this post. The text reports each coefficient <em>b</em> as a multiple, exp(<em>b</em>): the 0.752 for French siblings in column 3, for example, is the 2.1 times above.</p>
+<div id="tbl-results" class="column-page quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Regression results.
+</figcaption>
+<div aria-describedby="tbl-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;">(1) Baseline</th>
+<th style="text-align: center;">(2) + Migration</th>
+<th style="text-align: center;">(3) By empire</th>
+<th style="text-align: center;">(4) + CFA zone</th>
+<th style="text-align: center;">(5) Africa only</th>
+<th style="text-align: center;">(6) Erosion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Colonial link</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Colonial link, any empire</td>
+<td style="text-align: center;">1.342***<br>(0.120)</td>
+<td style="text-align: center;">0.783***<br>(0.108)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">× Britain</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.583***<br>(0.162)</td>
+<td style="text-align: center;">0.590***<br>(0.162)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.542***<br>(0.171)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">× France</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.926***<br>(0.227)</td>
+<td style="text-align: center;">0.946***<br>(0.226)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.823***<br>(0.233)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">× Spain</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.940***<br>(0.168)</td>
+<td style="text-align: center;">0.948***<br>(0.169)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">1.093***<br>(0.246)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">× other European empires</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.861***<br>(0.276)</td>
+<td style="text-align: center;">0.870***<br>(0.277)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.895***<br>(0.282)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colonial link × decades since it ended (centered)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.021<br>(0.017)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Sibling colonies (both independent after 1945)</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Siblings, any empire</td>
+<td style="text-align: center;">0.546***<br>(0.039)</td>
+<td style="text-align: center;">0.404***<br>(0.037)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.404***<br>(0.038)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">× Britain</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.242***<br>(0.043)</td>
+<td style="text-align: center;">0.248***<br>(0.043)</td>
+<td style="text-align: center;">-0.336**<br>(0.134)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">× France</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.752***<br>(0.067)</td>
+<td style="text-align: center;">0.572***<br>(0.070)</td>
+<td style="text-align: center;">0.364***<br>(0.119)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">× other empires</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">2.185***<br>(0.357)</td>
+<td style="text-align: center;">2.235***<br>(0.360)</td>
+<td style="text-align: center;">2.040***<br>(0.410)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Both in the CFA franc zone</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.872***<br>(0.117)</td>
+<td style="text-align: center;">0.413***<br>(0.115)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Other historical links</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Settler colony link</td>
+<td style="text-align: center;">0.533<br>(0.633)</td>
+<td style="text-align: center;">-0.100<br>(0.511)</td>
+<td style="text-align: center;">-0.129<br>(0.509)</td>
+<td style="text-align: center;">-0.123<br>(0.508)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">-0.140<br>(0.509)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Other dependency (e.g.&nbsp;Ottoman, Habsburg)</td>
+<td style="text-align: center;">0.141<br>(0.242)</td>
+<td style="text-align: center;">-0.059<br>(0.218)</td>
+<td style="text-align: center;">-0.045<br>(0.218)</td>
+<td style="text-align: center;">-0.028<br>(0.217)</td>
+<td style="text-align: center;">0.521<br>(0.613)</td>
+<td style="text-align: center;">-0.060<br>(0.218)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Siblings, independent before 1945</td>
+<td style="text-align: center;">0.162***<br>(0.053)</td>
+<td style="text-align: center;">0.134***<br>(0.052)</td>
+<td style="text-align: center;">0.124**<br>(0.052)</td>
+<td style="text-align: center;">0.138***<br>(0.052)</td>
+<td style="text-align: center;">-0.528***<br>(0.179)</td>
+<td style="text-align: center;">0.135***<br>(0.052)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Controls</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Log distance</td>
+<td style="text-align: center;">-1.419***<br>(0.020)</td>
+<td style="text-align: center;">-1.144***<br>(0.020)</td>
+<td style="text-align: center;">-1.148***<br>(0.020)</td>
+<td style="text-align: center;">-1.140***<br>(0.020)</td>
+<td style="text-align: center;">-0.749***<br>(0.067)</td>
+<td style="text-align: center;">-1.144***<br>(0.020)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shared border</td>
+<td style="text-align: center;">0.450***<br>(0.105)</td>
+<td style="text-align: center;">-0.147<br>(0.091)</td>
+<td style="text-align: center;">-0.183**<br>(0.092)</td>
+<td style="text-align: center;">-0.204**<br>(0.092)</td>
+<td style="text-align: center;">0.436***<br>(0.145)</td>
+<td style="text-align: center;">-0.144<br>(0.091)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shared official language</td>
+<td style="text-align: center;">0.974***<br>(0.049)</td>
+<td style="text-align: center;">0.873***<br>(0.046)</td>
+<td style="text-align: center;">0.851***<br>(0.046)</td>
+<td style="text-align: center;">0.826***<br>(0.045)</td>
+<td style="text-align: center;">0.741***<br>(0.089)</td>
+<td style="text-align: center;">0.873***<br>(0.046)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Shared spoken language</td>
+<td style="text-align: center;">0.124**<br>(0.051)</td>
+<td style="text-align: center;">0.034<br>(0.048)</td>
+<td style="text-align: center;">0.034<br>(0.047)</td>
+<td style="text-align: center;">0.048<br>(0.047)</td>
+<td style="text-align: center;">0.266***<br>(0.090)</td>
+<td style="text-align: center;">0.033<br>(0.048)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Shared religion (index)</td>
+<td style="text-align: center;">0.608***<br>(0.043)</td>
+<td style="text-align: center;">0.497***<br>(0.040)</td>
+<td style="text-align: center;">0.502***<br>(0.040)</td>
+<td style="text-align: center;">0.523***<br>(0.040)</td>
+<td style="text-align: center;">0.570***<br>(0.140)</td>
+<td style="text-align: center;">0.497***<br>(0.041)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Log (1 + migrant stock)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.186***<br>(0.006)</td>
+<td style="text-align: center;">0.185***<br>(0.006)</td>
+<td style="text-align: center;">0.183***<br>(0.006)</td>
+<td style="text-align: center;">0.141***<br>(0.021)</td>
+<td style="text-align: center;">0.185***<br>(0.006)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Migrant stock zero or missing</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.370***<br>(0.044)</td>
+<td style="text-align: center;">0.369***<br>(0.044)</td>
+<td style="text-align: center;">0.370***<br>(0.044)</td>
+<td style="text-align: center;">0.517***<br>(0.144)</td>
+<td style="text-align: center;">0.367***<br>(0.044)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>France − Britain</strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colonial link</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.343<br>(0.276)<br>p = 0.213</td>
+<td style="text-align: center;">0.356<br>(0.274)<br>p = 0.194</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.281<br>(0.279)<br>p = 0.313</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Siblings</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.510<br>(0.079)<br>p &lt; 0.001</td>
+<td style="text-align: center;">0.324<br>(0.081)<br>p &lt; 0.001</td>
+<td style="text-align: center;">0.700<br>(0.180)<br>p &lt; 0.001</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Country fixed effects (both sides of the pair)</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sample</td>
+<td style="text-align: center;">All</td>
+<td style="text-align: center;">All</td>
+<td style="text-align: center;">All</td>
+<td style="text-align: center;">All</td>
+<td style="text-align: center;">Africa</td>
+<td style="text-align: center;">All</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Observations (directed)</td>
+<td style="text-align: center;">29,070</td>
+<td style="text-align: center;">29,070</td>
+<td style="text-align: center;">29,070</td>
+<td style="text-align: center;">29,070</td>
+<td style="text-align: center;">2,550</td>
+<td style="text-align: center;">29,070</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Country pairs (clusters)</td>
+<td style="text-align: center;">14,535</td>
+<td style="text-align: center;">14,535</td>
+<td style="text-align: center;">14,535</td>
+<td style="text-align: center;">14,535</td>
+<td style="text-align: center;">1,275</td>
+<td style="text-align: center;">14,535</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Countries</td>
+<td style="text-align: center;">171</td>
+<td style="text-align: center;">171</td>
+<td style="text-align: center;">171</td>
+<td style="text-align: center;">171</td>
+<td style="text-align: center;">51</td>
+<td style="text-align: center;">171</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">R²</td>
+<td style="text-align: center;">0.702</td>
+<td style="text-align: center;">0.738</td>
+<td style="text-align: center;">0.740</td>
+<td style="text-align: center;">0.741</td>
+<td style="text-align: center;">0.792</td>
+<td style="text-align: center;">0.738</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Within R²</td>
+<td style="text-align: center;">0.573</td>
+<td style="text-align: center;">0.624</td>
+<td style="text-align: center;">0.626</td>
+<td style="text-align: center;">0.628</td>
+<td style="text-align: center;">0.685</td>
+<td style="text-align: center;">0.624</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="small">
+<p>The outcome is the log of the scaled SCI, so coefficients are in log points and exp(<em>b</em>) gives the multiples in the text. Every column includes a fixed effect for each country on both sides of the pair, which absorbs population, Facebook use and anything else about a single country. Each country pair appears twice, once in each direction, so standard errors are clustered by country pair. Siblings are two former colonies of the same empire that both became independent after 1945. Column 5 has no colonial-link terms because no colonizer is in the African sample; terms that do not occur in a sample are dropped. In column 6, decades since the colonial link ended are centered at the sample mean of 106 years. The France-Britain rows give the difference between the two coefficients, its standard error from the full covariance matrix, and its p-value. Using COLDAT’s mean dates, or dropping the weakest 5% of connections, leaves the estimates essentially unchanged. * p &lt; 0.1, ** p &lt; 0.05, *** p &lt; 0.01.</p>
+</div>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Sources: Social Connectedness Index, January 2026 release (Johnston, Kuchler, Kulkarni and Stroebel 2026, <em>Data in Brief</em>); CEPII Gravity database V202211; UN DESA International Migrant Stock 2024; COLDAT (Becker 2019). Kosovo is dropped because it is not in the CEPII data. Six further countries drop out of the regressions because they are missing one or more of the CEPII control variables. Coding decisions: each former colony is assigned to its last European colonizer, with four exceptions where that rule picks a brief or partial administration — Morocco and Cameroon to France, Eritrea and Libya to Italy. Vanuatu, an Anglo-French condominium, has no single colonizer and is left out of the sibling comparison. The United States, Canada, Australia and New Zealand are treated as settler colonies and kept separate; South Africa is treated as a regular colony.↩︎</p></li>
+<li id="fn2"><p>The predicted value comes from a gravity regression of log SCI on log distance, a shared border, shared official and spoken languages, and shared religion, with a fixed effect for each country. The fixed effects absorb anything about a single country, including how many people use Facebook. The maps show actual relative to predicted. They do not account for migration, so they show the full colonial pattern. The estimates in the text also hold bilateral migrant stocks constant, so map values and text values differ slightly.↩︎</p></li>
+<li id="fn3"><p>Keith Head, Thierry Mayer and John Ries, “The Erosion of Colonial Trade Linkages after Independence,” <em>Journal of International Economics</em> 81, no. 1 (2010): 1–14.↩︎</p></li>
+<li id="fn4"><p>Frederick Cooper, <em>Citizenship between Empire and Nation: Remaking France and French Africa, 1945–1960</em> (Princeton University Press, 2014). Cooper’s central argument is that the break-up of French West Africa into eight states was not inevitable; federation was a live option until the end.↩︎</p></li>
+<li id="fn5"><p>Tony Chafer, “Education and Political Socialisation of a National-Colonial Political Elite in French West Africa, 1936–47,” <em>Journal of Imperial and Commonwealth History</em> 35, no. 3 (2007): 437–458. On the school itself, see Peggy R. Sabatier, “‘Elite’ Education in French West Africa: The Era of Limits, 1903–1945,” <em>International Journal of African Historical Studies</em> 11, no. 2 (1978): 247–266.↩︎</p></li>
+<li id="fn6"><p>A. G. Hopkins, “The Creation of a Colonial Monetary System: The Origins of the West African Currency Board,” <em>African Historical Studies</em> 3, no. 1 (1970): 101–132. Exit dates are from the successor central banks.↩︎</p></li>
+<li id="fn7"><p>Fanny Pigeaud and Ndongo Samba Sylla, <em>Africa’s Last Colonial Currency: The CFA Franc Story</em> (Pluto Press, 2021).↩︎</p></li>
+<li id="fn8"><p>Michael Bailey, Rachel Cao, Theresa Kuchler, Johannes Stroebel and Arlene Wong, “Social Connectedness: Measurement, Determinants, and Effects,” <em>Journal of Economic Perspectives</em> 32, no. 3 (2018): 259–280.↩︎</p></li>
+<li id="fn9"><p>Robustness: the results are unchanged to two decimal places using COLDAT’s mean dates instead of its latest dates, and unchanged when the weakest 5% of connections are dropped. The migrant-stock data report zeros for many country pairs where the true value is unknown, so the migration control is a lower bound on the diaspora. Code and replication: <a href="https://github.com/aadhavr/sci-colonial" class="uri">https://github.com/aadhavr/sci-colonial</a>.↩︎</p></li>
+</ol>
+</section></div> ]]></description>
+  <category>economic history</category>
+  <category>political economy</category>
+  <category>networks</category>
+  <guid>https://www.aadhavrajesh.com/posts/sci-colonial/</guid>
+  <pubDate>Mon, 21 Sep 2026 04:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Prompting LLMs in the Arabic script is 2x cheaper if you speak Arabic vs. Acehnese.</title>
   <dc:creator>Aadhav Rajesh</dc:creator>
