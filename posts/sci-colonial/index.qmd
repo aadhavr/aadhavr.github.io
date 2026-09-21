@@ -112,7 +112,7 @@ By that measure, the French empire left its colonies a regional network that sti
 
 Facebook users are not a random sample of anyone. This is one snapshot, so the "not fading" result compares old and recent colonial links rather than following any link over time. And any dataset of empires involves judgment calls about who ruled a territory last; mine are listed below.[^7]
 
-## The Regression
+## Appendix
 
 For anyone who wants to check the numbers, @tbl-results reports the models behind every estimate in this post. The text reports each coefficient *b* as a multiple, exp(*b*): the 0.752 for French siblings in column 3, for example, is the 2.1 times above.
 
