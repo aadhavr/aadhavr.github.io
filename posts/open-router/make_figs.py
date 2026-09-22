@@ -6,7 +6,7 @@ Usage (from the post folder):
     python make_figs.py
 
 Reads:  data/*.csv  (written by the analysis scripts)
-Writes: figs/1_share.qmd, 2_levels.qmd, 3_price.qmd, 4_quality.qmd,
+Writes: _figs/1_share.qmd, 2_levels.qmd, 3_price.qmd, 4_quality.qmd,
         5_event.qmd, 6_spend.qmd  (raw-HTML fragments that index.qmd includes)
 
 index.qmd includes these files, so the post itself contains no code.
@@ -20,7 +20,7 @@ from plotly.subplots import make_subplots
 from pathlib import Path
 
 DATA = Path("data")
-FIGS = Path("figs")
+FIGS = Path("_figs")   # leading underscore: Quarto ignores it when rendering the site
 FIGS.mkdir(exist_ok=True)
 
 BLUE, ORANGE, GRAY = "#1f5fa8", "#e07b24", "#8a8a8a"
