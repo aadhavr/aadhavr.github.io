@@ -1,9 +1,7 @@
 ---
 title: "Empires and Friendships"
 subtitle: "A gravity model of post-colonial social connectivity to estimate imperial legacies."
-author:
-  - name: Aadhav Rajesh
-    affiliation: Georgetown University
+author: "Aadhav Rajesh"
 date: "2026-09-21"
 categories: [economic history, political economy, networks]
 code-links:

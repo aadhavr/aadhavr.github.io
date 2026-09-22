@@ -1,0 +1,246 @@
+---
+title: "Open and Closed LLMs on OpenRouter Are Not Substitutes"
+subtitle: "A weekly panel of OpenRouter model usages and prices, rebuilt from 169 archived snapshots, January 2025 to September 2026."
+author: "Aadhav Rajesh"
+date: "2026-09-22"
+categories: [AI, tokenomics]
+code-links:
+  - text: Code and data
+    href: https://github.com/aadhavr/open-router
+    icon: github
+---
+
+In January of 2025, open-weight models received about a quarter of the tokens paid for on OpenRouter. By September 2026 they handled 73% of OpenRouter's paid tokens. For those who don't know, OpenRouter lets developers access hundreds of different AI models from a single billing account, and was acquired last month for $7.5 billion according to the New York Times.[^1] Regarding the acquisition, one Pitchbook analyst said it would grant "some degree of power over suppliers such as the frontier labs themselves, as well as hyperscalers and neoclouds."[^2] So, understanding this drastic trend in OpenRouter's offerings can tell us a lot about the state of AI right now.
+
+[^1]: <https://www.nytimes.com/2026/08/19/business/stripe-openrouter-ai.html>
+
+[^2]: <https://techcrunch.com/2026/08/19/stripe-didnt-really-buy-openrouter-because-of-the-singularity/>
+
+The obvious answer is price, i.e., open models are cheaper than closed models. However, when I analyzed the price gap between both groups of models, they barely moved over the whole period, and did not predict the share in any specification I ran. Neither does model releases, and quality gets closer, but only within the same week (an example of common cause variation). The reason all three fail is that almost nobody switched. Closed-model use on OpenRouter grew 115 times over these 21 months and hit its all-time peak in the last month of my sample. Open-model use grew 792 times. The share moved because one side grew faster, not because the other side lost customers.
+
+## The data
+
+I built a weekly panel of OpenRouter usage and list prices covering January 1, 2025 to September 21, 2026. Model usage comes from OpenRouter's public rankings dataset: the top 50 models by token volume for each day, plus one "other" row. The top 50 accounts for 90% to 96% of all traffic across the period. To access past model prices, I reconstructed the history from 169 archived copies of that endpoint on the Wayback Machine, roughly one every four days, covering 973 distinct models. Each usage row gets the most recent price known on or before that date; 98.3% of paid tokens use a price from an earlier snapshot, with a median age of two days.
+
+I labelled every model in the panel "open" or "closed" by hand, each with a source. A model is open if anyone can download its weights on that date. License terms do not enter into it and weights published later do not count retroactively (e.g., MiniMax M3 was closed from its May 31, 2026 API launch until its weights appeared on June 12).
+
+114 of the 121 models have a quality score from the Artificial Analysis Intelligence Index, pulled once from their API so that every model is scored on the same index version.
+
+OpenRouter has no direct-to-lab API traffic, and it is a small slice of global inference. Prices are list prices, with no caching or volume discounts. Each model has its own tokenizer, so a "token" is not perfectly comparable across models. OpenRouter itself grew enormously over this period, so part of the token growth on both sides is the router adding users rather than the world using more AI. The analysis that follows, thus, is about this particular router.
+
+## What happened
+
+::: {#fig-share}
+
+{{< include figs/1_share.qmd >}}
+
+Open-weight models' share of OpenRouter tokens. Thick lines are four-week averages, faint lines are weekly values. Lower panel: free variants and stealth models as a share of all tokens. Source: OpenRouter rankings, as of 2026-09-22. Top 50 models per day; stealth and unlabeled models are excluded from the share.
+
+:::
+
+The open-weight share sat between 20% and 25% for most of 2025, with two brief spikes. Then, from December 2025, it begins climbing steadily, ultimately reaching ~73% by September 2026.
+
+OpenRouter hosts free variants of many models, which run about 10% of all tokens. After stripping those out, the 2025 level drops by 5 to 12 points (the July-August 2025 spike was almost entirely from free variants of DeepSeek V3-0324 and R1-0528) but the 2026 climb is unchanged. In September 2026 the share is 73.3% including free tokens and 72.6% without.
+
+The second thing to rule out are "stealth" models, which providers run unlabeled before release. They never exceed 6% of tokens, and when I reassign them to their later-revealed identities the line moves by at most two points.
+
+## Nobody switched
+
+::: {#fig-levels}
+
+{{< include figs/2_levels.qmd >}}
+
+Paid tokens per week by group, on a log scale, with the open share below. Four-week averages. Both lines rise for the whole period, which is differential growth rather than switching.
+
+:::
+
+If buyers were moving from closed models to open ones, closed volume should be falling. Closed models ran 0.2 trillion paid tokens a week at the start of 2025 and 23.1 trillion by September 2026: a 115-fold increase, with the peak week arriving in the last month of my sample. Open models went from 0.07 trillion to 55.6 trillion, a 792-fold increase.
+
+The week-to-week pattern shows the same trend. Growth rates of the two groups correlate at +0.75. Under a substitution effect, that correlation should be negative, but instead they rise and fall together, which is what happens when both are experiencing growing demand.
+
+If we look at the money, closed spend peaked at $72 million a week in June 2026 and fell to $61 million by September, while open spend rose from $8.9 million to $32.7 million over the same months. So consumers are continuing to use closed models for work, but reduced how much they spend on them.
+
+A price elasticity of substitution measures how much quantity moves from one good to another when their relative price changes. Given that closed models did not lose volume, the failure of price to predict the open share is what you should expect. The same goes for quality and for model releases. The three sections that follow work through each one, and the interesting question is not why any of them failed, but why the new work went to open models in the first place.
+
+### Why it was not the price
+
+::: {#fig-price}
+
+{{< include figs/3_price.qmd >}}
+
+The closed-to-open price ratio against the open share of paid tokens. Four-week averages, log scale on the left axis. The model-average ratio is the main measure; the token-weighted one moves with the shares themselves. Source: OpenRouter list prices, blended 3 input : 1 output.
+
+:::
+
+Averaging each group's models equally, closed models cost about 4.6 to 6.6 times what open models cost, and that ratio is roughly as high in September 2026 as it was in early 2025.
+
+Regressing the log odds of the open share on the log price ratio, with a linear trend and Newey-West standard errors, gives 0.053 (t = 0.22) in levels and 0.099 (t = 0.79) in first differences. Adding a quality control does not change this. With a standard error near 0.10 in first differences, the data rule out an elasticity above roughly 0.25.
+
+The average paid open-model token increased in price from $0.21 per million in December 2024 to $0.56 in September 2026, while the average closed token fell from $4.08 to $2.76. Buyers did not chase cheaper tokens. Within open models they moved up-market, and closed volume kept growing at its own high price. Both groups acted in line with serving separate aggregate demands, rather than competing for the same consumers.
+
+A caution for anyone replicating this: the token-weighted price ratio does correlate with the share (0.39, t = 3.3 in differences). This is because, as cheap work migrates to open models, the closed tokens that remain are disproportionately frontier models, so the weighted closed price rises mechanically.
+
+## Quality: closer, but not proof
+
+::: {#fig-quality}
+
+{{< include figs/4_quality.qmd >}}
+
+Top: the best available Intelligence Index score on each side, by week. The steps are new best-in-class releases. Bottom: the relative frontier gap, log(closed / open), against the open share of paid tokens. Sources: Artificial Analysis (artificialanalysis.ai) and OpenRouter.
+
+:::
+
+In this section, the way I've defined quality (which is admittedly very difficult to do given the abundance of benchmarks used to evaluate models) is worth scrutinizing. The gap between the best closed model and the best open model widened, from under one index point in early 2025 to eleven points in April 2026. Over that time, however, the index scale itself grew sixfold, so absolute differences are not comparable across dates.
+
+The frontier gap is the distance between the best model available on each side. For every week, I take the highest Intelligence Index score among all open-weight models released up to that point, and the highest among all closed models, counting only models that appear on OpenRouter, and the gap is the difference between the two.
+
+In relative terms, the best open model went from about 61% of the best closed model's score in mid-2025 to 88% in September 2026. The log ratio of the two frontiers fell from about 0.50 to 0.13. That relative frontier gap tracks share consistently: -1.11 (t = -3.6) in levels and -0.23 (t = -2.5) in first differences, and it holds when the price ratio is included. The frontier gap doesn't use token weights; it reads the best score on each side and ignores volume, so when usage moves, the measure does not, thus the correlation isn't mechanical.
+
+But it only works with the share within the same week. If you were to lag the gap by one, two, or four weeks and the coefficient flips sign and loses significance. That pattern fits because when a strong open model launches, it becomes the open frontier and absorbs tokens in the same week. If users were genuinely reacting to a narrowing frontier, the reaction should show up in the weeks after, since teams need time to evaluate and switch. It doesn't, and the event study in the next section finds no post-release acceleration either. Given the results from above, you would expect a new best open model raises the frontier and pulls in new volume in the same week.
+
+## Frontier changes
+
+::: {#fig-event}
+
+{{< include figs/5_event.qmd >}}
+
+The average path of the open share around frontier changes, in log odds, set to zero in the event week. Shaded bands are standard errors of the mean. Sources: Artificial Analysis and OpenRouter, paid tokens only.
+
+:::
+
+The best open model in any given week is the highest score among all open-weight models released up to that point. The highest score stays at exactly the same value, until a new open model comes out that scores higher than every previous one. It was 11.4 every week from February through May 2025, jumped to 13.1 in June when DeepSeek R1-0528 arrived, and stayed at 13.1 until late September.
+
+The frontier changes in only 26 of 91 weeks. That is awkward for a weekly regression, given that two thirds of the weeks there is no variation to work with. Instead of asking the gap to explain every week (i.e., through a regression), I ask what happens to the open share in the weeks following each jump. So I ran an event study instead, comparing the change in the open share over the four and eight weeks after each frontier improvement against weeks with no change.
+
+I expected to find specific moments when a major open model comes out that everyone switches and the line steps up. However, that is not what the data looks like. After the best open model improves, the open share grows less than usual over the following four weeks (-0.130, t = -1.3), and the eight-week effect is indistinguishable from zero. Quiet weeks deliver +0.115 in log odds over four weeks, and the mean weekly change in log odds is 0.025 with a whopping standard deviation of 0.177!
+
+Simply put, if I handed you the weekly share data and asked you to mark the release weeks, you probably wouldn't be able to. Which means the shift to open models does not have a specific moment I can point at to explain it. Open volume grew faster than closed volume, week after week, with no single event to point at.
+
+And growth isn't concentrated in a few good weeks. The eight largest weekly moves cancel almost exactly and account for 1% of the total rise.
+
+## Who is getting the money
+
+::: {#fig-spend}
+
+{{< include figs/6_spend.qmd >}}
+
+Top: the open-weight share of tokens and of router spend, with the gap shaded. Bottom: the Herfindahl index across model creators, for tokens and for spend. Four-week averages. Spend is measured on this router, not revenue of the model makers: for an open-weight model the money goes to the provider that hosts it. The lower panel groups spend by who made the model, not by who sold it, so concentration among hosting providers is not measured here.
+
+:::
+
+Every row in the panel has a token count and a price, so I compute what buyers actually paid: tokens price per token. I call it router spend. (It is not lab revenue, more on that below.)
+
+By tokens, open models went from a quarter of the market to nearly three quarters. By money, they went from 1.8% to 35.6%. There is an uptick in market share, but it is half the size, because you can buy roughly five open tokens for the price of one closed token.
+
+Isn't the spend share just the token share with the price gap applied? Open models are about five times cheaper, so if they have 73% of the tokens, of course they receive far less of the money.
+
+Well let's check it with some back-of-envelope math. Suppose open models really were always five times cheaper. Then 73% of tokens at 1 unit each buys 73 units of spend, and 27% of tokens at 5 units each buys 135, so open models would be 73 / 208, or 35% of spend. That is almost exactly what I measure for September 2026. So far so good.
+
+Now try it for December 2024. Open models made up 26% of tokens and 1.8% of spend. For that explanation to work, an open token would have to be about ~20 times cheaper than a closed one, not 5 times. The composition inside both groups has changed: open buyers moved to pricier open models, and the cheapest closed models lost ground, so the two shares signal different information.
+
+Now, Anthropic models were 18% of tokens and 66% of spend in 2026 Q2, at roughly 3.6 times the router's average price. By Q3 (a partial quarter), that was 7.7% of tokens and 44% of spend, at 5.8 times the average of $8.40 per million tokens. Google went the other way on volume, falling from 23% of tokens in 2025 Q4 to 7% in 2026 Q3.
+
+A model being open-weight says nothing about what it costs. Moonshot AI publishes its weights and charges 3.5 times the router average, taking 7.1% of spend on 2.1% of tokens. DeepSeek also publishes its weights and sells at 0.17 times the average, taking 4.3% of spend on 25% of tokens. So a model being open and a model being cheap are not the same thing.
+
+The more interesting split is who is allowed to sell you the tokens. Nobody can sell you Claude except Anthropic and the resellers it authorizes. Anyone with GPUs can sell you DeepSeek. In January 2025, 98% of router spend went to models that only their creator could sell. By September 2026, 64% did; the other 36% went to models that any provider can host. That second number is not all host revenue since labs like DeepSeek and Z.ai sell their own weights on OpenRouter too, and my data cannot see which provider served a given token. What it measures is the share of spend that is open to competition, and it went from 2% to 36% in 21 months. So volume grew everywhere and what changed is that a third of this market stopped having a single seller.
+
+Concentration of spend by model creator collapsed over the period, from 0.89 to 0.20. Token concentration fell too, but far less, from 0.29 to 0.17. So the token market was always spread out; it is the money that stopped being a near-monopoly.
+
+This analysis groups spend by who made each model, not by who sold it. For open-weight models the seller is whichever provider hosts the weights, and this dataset does not name hosts. The inference-hosting market could be highly concentrated and that is something I plan exploring in the next post.
+
+## What I think is going on
+
+Ultimately, the shift from close to open models on OpenRouter is not a switch, which leads us to the question of why the new work went to open ones.
+
+Firstly, I don't think the marginal buyer of tokens in 2026 was a person choosing a model; I think it was an agent burning through tokens at a willingness-to-pay no human would match.
+
+Agentic processes consume tokens in a fundamentally different pattern than interacting via chat does. A developer asks a question, sends a few thousand tokens, and reads to see if the answer is acceptable. An agent working through a codebase sends millions and is optimizing for whether the loop terminates at an acceptable cost. The relevant decision then becomes: "Which model is good enough that I can afford to run this a thousand times?"
+
+This would explain why the frontier gap doesn't predict the share: agents were never buying the frontier. It explains why Anthropic's price premium rose from 3.6x to 5.8x while its volume collapsed. Anthropic held onto model demand where model quality still justifies the price, and ceded demand where it doesn't. And, as these workloads matured, they moved from the cheapest open models to the good ones, because a slightly better model that fails less often is cheaper per completed task even at three times the token price.
+
+The second reason for why this trend emerges, I argue, is that increasingly, nobody chooses the model at all. Agentic tools ship a default model, routers optimize on cost and latency, and platforms negotiate model licensing deals that we, as end users, don't see.
+
+A default change in a widely-used tool will shift token demand more in a week than a benchmark result that most consumers aren't aware of. If this is the case, then "demand for open models" is a story about a dozen procurement decisions, rather than the aggregate of millions of user preferences.
+
+Ultimately, this analysis shows that open weights did not win because they are cheap and caught up on quality. The price gap never closed and the absolute quality gap never closed. Closed models never lost a single quarter of volume. What actually happened is that a new, enormous, price-sensitive, automated category of demand appeared, and open models were well-positioned to absorb it. Meanwhile closed models further concentrated on a market segment where they could still command a premium.
+
+If what I am arguing is true, I suspect in the long-run these two model types will splitting into two markets:
+
+1. A high-volume commodity tier where the margin belongs to whoever runs the servers.
+2. A high-price frontier tier where the margin belongs to whoever trains the model.
+
+The 36% of spend that became recently contestable is the size of the first tier so far. Unfortunately, without knowing what the tokens were for, I can't produce any additional quantitative analysis to support this. But I think I have a workaround. Stay tuned for the next post.
+
+## Appendix
+
+### A. How the panel was built
+
+Usage comes from OpenRouter's `rankings-daily` dataset, retrieved on September 22, 2026, covering January 1, 2025 to September 21, 2026: 629 days of the top 50 models plus an "other" aggregate. Two days are missing at the source, June 15 and July 15, 2025. The data is licensed CC BY 4.0.
+
+Prices come from 169 archived captures of the OpenRouter models endpoint on the Wayback Machine, from March 2024 to September 2026, plus daily captures of my own from September 22, 2026 onward. Four archived captures returned content that was not valid JSON and were skipped; each has a valid capture within a few days. Prices are blended at three input tokens for every output token, because OpenRouter reports a single token total for each model and day.
+
+Each usage row is joined to prices on the full variant name, so a `:free` variant keeps its own zero price rather than inheriting the paid model's price. Captures before May 2025 carry no canonical model name, so older identifiers are mapped forward using later captures that carry both. Where no earlier capture exists for a newly listed model, the nearest later capture is used, which covers 1.7% of paid tokens.
+
+Quality comes from a single pull of the Artificial Analysis API: 656 models, 647 of which have an Intelligence Index score. Every OpenRouter model is mapped to an explicit list of Artificial Analysis variants, and where a model has several effort or reasoning settings, the highest-scoring variant is used. The mapping is published with the code.
+
+### B. Labelling rules
+
+A model is **open** if its weights are publicly downloadable on that date. License restrictions, such as Tencent's Hunyuan Community License, do not change the label. A model is **closed** if no public weights exist on that date, including models whose weights were released later: MiniMax M3 is closed from May 31 to June 11, 2026, and open after.
+
+**Stealth** models are anonymous pre-release models. They are excluded from the open and closed shares, and a sensitivity line reassigns them to their revealed identities. **Excluded** are embedding and rerank models, and structured-output models that do not generate free text. **Free** covers any `:free` variant, plus any model with a list price of exactly zero.
+
+Two labels I could not confirm: GLM-5-Turbo and GLM-5V-Turbo are labelled closed, because I found no published weights, although one secondary source claims otherwise. Together they are 3.8 trillion tokens, well under 1% of the period.
+
+### C. Four measurement errors, and how I found them
+
+Each of these, left in place, produces a confident wrong answer.
+
+1. **Free variants poisoning paid prices.** Free variants share a canonical name with their paid parent, so a naive join gave paid DeepSeek R1, Llama 3.3 and gpt-oss-120b a price of zero, dropping up to 86% of open tokens in some months. Fixed by keying on the variant.
+2. **Renamed models.** Captures before May 2025 carry no canonical name, so 44% to 49% of closed tokens failed to match in spring 2025. Fixed by building a name map from later captures.
+3. **Survivorship in the model list.** OpenRouter delists old models, so the current list matched only 28% of early-2025 tokens and pushed the open share up by roughly 50 points. The archived captures fix this: match rates are 97% to 100% in every month.
+4. **A rescaled quality index.** The Intelligence Index grew sixfold in scale over the period, so absolute gaps are not comparable across dates. Relative gaps are.
+
+### D. Regression results
+
+The dependent variable throughout is the log odds of the open-weight share of paid tokens, weekly, with HAC (Newey-West) standard errors at four lags.
+
+| Specification | Variable | Coefficient | t |
+|---|---|---|---|
+| Levels + trend | log price ratio (model average) | 0.053 | 0.22 |
+| First differences | change in log price ratio | 0.099 | 0.79 |
+| Levels + trend | relative frontier gap | -1.11 | -3.61 |
+| Levels + trend + price | relative frontier gap | -1.27 | -3.81 |
+| First differences | change in relative frontier gap | -0.23 | -2.49 |
+| First differences + price | change in relative frontier gap | -0.24 | -3.02 |
+| Levels + trend | relative frontier gap, lagged 1 week | -0.91 | -2.79 |
+| First differences | change in gap, lagged 1 week | +0.13 | 1.45 |
+| First differences | change in gap, lagged 4 weeks | +0.28 | 1.58 |
+| Levels + trend | top-50 mean quality gap | 0.21 | 0.20 |
+| First differences | change in top-50 mean quality gap | -1.08 | -1.36 |
+
+: Regressions of the open share on price and quality measures. {#tbl-regressions}
+
+The event study compares the change in log odds over the weeks following each type of frontier change.
+
+| Horizon | Open frontier improves | Closed frontier improves | No change (baseline) |
+|---|---|---|---|
+| 4 weeks | -0.130 (t = -1.31) | +0.010 (t = 0.09) | +0.115 |
+| 8 weeks | -0.042 (t = -0.28) | +0.119 (t = 0.87) | +0.193 |
+
+: Event study around frontier changes. {#tbl-event}
+
+There are 14 open-frontier events, 12 closed-frontier events and 65 quiet weeks. The windows overlap, so the HAC lag length equals the horizon.
+
+### E. Limitations
+
+This is one router, weighted toward developers, with no enterprise contracts and no direct API traffic. Prices are list prices, with no caching, batch or negotiated discounts, and no adjustment for throughput, latency or context length. Tokens are counted by each provider's own tokenizer, so token counts are not perfectly comparable across model families; my earlier work on tokenizer efficiency suggests this understates the differences, and I have not applied that correction here.
+
+On quality, current-version scores are applied to older models, which is hindsight a buyer in 2025 did not have. Coverage falls below 60% of paid tokens in 18 of the 91 weeks, and those weeks are dropped from the quality regressions.
+
+On spend, this is router spend, not lab revenue. Spend on open-weight models accrues to whichever provider hosts the weights, which this dataset does not identify.
+
+Everything here is association rather than causation, and the one variable that does correlate with the share does so only within the same week.
+
+## Data and code
+
+The panel, the labelling files and every script are on GitHub: <https://github.com/aadhavr/open-router>. Replication notes to follow.

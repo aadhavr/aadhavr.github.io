@@ -16,5 +16,26 @@
   },
   "posts/sci-colonial/regression_table.md": {
     "regression_table.html": "3160ae12"
+  },
+  "posts/open-router/index.qmd": {
+    "index.html": "38d87185"
+  },
+  "posts/open-router/figs/3_price.qmd": {
+    "3_price.html": "edef7527"
+  },
+  "posts/open-router/figs/4_quality.qmd": {
+    "4_quality.html": "06bd4505"
+  },
+  "posts/open-router/figs/2_levels.qmd": {
+    "2_levels.html": "b9020744"
+  },
+  "posts/open-router/figs/6_spend.qmd": {
+    "6_spend.html": "18566514"
+  },
+  "posts/open-router/figs/1_share.qmd": {
+    "1_share.html": "78831363"
+  },
+  "posts/open-router/figs/5_event.qmd": {
+    "5_event.html": "c8b52aea"
   }
 }
