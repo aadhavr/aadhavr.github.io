@@ -32,7 +32,7 @@ OpenRouter has no direct-to-lab API traffic, and it is a small slice of global i
 
 ::: {#fig-share}
 
-{{< include figs/1_share.qmd >}}
+{{< include _figs/1_share.qmd >}}
 
 Open-weight models' share of OpenRouter tokens. Thick lines are four-week averages, faint lines are weekly values. Lower panel: free variants and stealth models as a share of all tokens. Source: OpenRouter rankings, as of 2026-09-22. Top 50 models per day; stealth and unlabeled models are excluded from the share.
 
@@ -48,7 +48,7 @@ The second thing to rule out are "stealth" models, which providers run unlabeled
 
 ::: {#fig-levels}
 
-{{< include figs/2_levels.qmd >}}
+{{< include _figs/2_levels.qmd >}}
 
 Paid tokens per week by group, on a log scale, with the open share below. Four-week averages. Both lines rise for the whole period, which is differential growth rather than switching.
 
@@ -66,7 +66,7 @@ A price elasticity of substitution measures how much quantity moves from one goo
 
 ::: {#fig-price}
 
-{{< include figs/3_price.qmd >}}
+{{< include _figs/3_price.qmd >}}
 
 The closed-to-open price ratio against the open share of paid tokens. Four-week averages, log scale on the left axis. The model-average ratio is the main measure; the token-weighted one moves with the shares themselves. Source: OpenRouter list prices, blended 3 input : 1 output.
 
@@ -84,7 +84,7 @@ A caution for anyone replicating this: the token-weighted price ratio does corre
 
 ::: {#fig-quality}
 
-{{< include figs/4_quality.qmd >}}
+{{< include _figs/4_quality.qmd >}}
 
 Top: the best available Intelligence Index score on each side, by week. The steps are new best-in-class releases. Bottom: the relative frontier gap, log(closed / open), against the open share of paid tokens. Sources: Artificial Analysis (artificialanalysis.ai) and OpenRouter.
 
@@ -102,7 +102,7 @@ But it only works with the share within the same week. If you were to lag the ga
 
 ::: {#fig-event}
 
-{{< include figs/5_event.qmd >}}
+{{< include _figs/5_event.qmd >}}
 
 The average path of the open share around frontier changes, in log odds, set to zero in the event week. Shaded bands are standard errors of the mean. Sources: Artificial Analysis and OpenRouter, paid tokens only.
 
@@ -122,7 +122,7 @@ And growth isn't concentrated in a few good weeks. The eight largest weekly move
 
 ::: {#fig-spend}
 
-{{< include figs/6_spend.qmd >}}
+{{< include _figs/6_spend.qmd >}}
 
 Top: the open-weight share of tokens and of router spend, with the gap shaded. Bottom: the Herfindahl index across model creators, for tokens and for spend. Four-week averages. Spend is measured on this router, not revenue of the model makers: for an open-weight model the money goes to the provider that hosts it. The lower panel groups spend by who made the model, not by who sold it, so concentration among hosting providers is not measured here.
 
