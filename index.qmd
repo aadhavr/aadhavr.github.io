@@ -21,8 +21,6 @@ embedded at the Tanzania Institute of Education. I'm also a Research Assistant f
 
 In my free time, I like to [apply econometrics to forecast surf](https://github.com/aadhavr/campus-point-waves) and [play guitar with my friends](https://www.instagram.com/20somethingmusic/?__d=1%25252F).
 
-Email: ar2201 [at] georgetown [dot] edu
-
 ::: {.bio-links}
 [Email](mailto:ar2201@georgetown.edu) · [GitHub](https://github.com/aadhavr) · [CV](cv.pdf) · [Writing](writing.qmd) · [Spotify](https://open.spotify.com/user/aadhav_r?si=65869ba9eb5047be)
 :::
