@@ -33,10 +33,10 @@ def load(name):
 
 
 def style(fig, title=None, height=520, legend_rows=1, hovermode="x unified", **kw):
-    # The title sits in the top margin; the legend hangs below it and grows downward,
-    # so extra legend rows can never run into the title.
-    top = 64 + 26 * legend_rows
-    plot_h = height - top - 46
+    # Title above the plot, legend below the x-axis: the two cannot collide, whatever
+    # the screen width or the number of legend rows.
+    top, bottom = 58, 58 + 26 * legend_rows
+    plot_h = height - top - bottom
     fig.update_layout(
         title=dict(text=title, x=0, xref="paper", xanchor="left",
                    y=0.97, yref="container", yanchor="top",
@@ -45,11 +45,10 @@ def style(fig, title=None, height=520, legend_rows=1, hovermode="x unified", **k
         font=dict(family=FONT, size=13, color="#222"),
         plot_bgcolor="white", paper_bgcolor="white",
         hovermode=hovermode,
-        legend=dict(orientation="h", yanchor="top",
-                    y=1 + (26 * legend_rows + 4) / plot_h, x=0,
+        legend=dict(orientation="h", yanchor="top", y=-40 / plot_h, x=0,
                     bgcolor="rgba(255,255,255,0)", borderwidth=0,
                     font=dict(size=12)),
-        margin=dict(l=62, r=62, t=top, b=46),
+        margin=dict(l=62, r=62, t=top, b=bottom),
         **kw,
     )
     fig.update_xaxes(showgrid=False, showline=True, linecolor="#444", ticks="outside",
