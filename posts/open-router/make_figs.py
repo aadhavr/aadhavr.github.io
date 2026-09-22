@@ -32,8 +32,11 @@ def load(name):
     return pd.read_csv(DATA / f"{name}.csv", index_col=0, parse_dates=True).sort_index()
 
 
-def style(fig, title=None, height=520, hovermode="x unified", **kw):
-    # Title sits in the container margin, legend just below it, so the two never overlap.
+def style(fig, title=None, height=520, legend_rows=1, hovermode="x unified", **kw):
+    # The title sits in the top margin; the legend hangs below it and grows downward,
+    # so extra legend rows can never run into the title.
+    top = 64 + 26 * legend_rows
+    plot_h = height - top - 46
     fig.update_layout(
         title=dict(text=title, x=0, xref="paper", xanchor="left",
                    y=0.97, yref="container", yanchor="top",
@@ -42,10 +45,11 @@ def style(fig, title=None, height=520, hovermode="x unified", **kw):
         font=dict(family=FONT, size=13, color="#222"),
         plot_bgcolor="white", paper_bgcolor="white",
         hovermode=hovermode,
-        legend=dict(orientation="h", yanchor="bottom", y=1.015, x=0,
+        legend=dict(orientation="h", yanchor="top",
+                    y=1 + (26 * legend_rows + 4) / plot_h, x=0,
                     bgcolor="rgba(255,255,255,0)", borderwidth=0,
                     font=dict(size=12)),
-        margin=dict(l=62, r=62, t=104, b=46),
+        margin=dict(l=62, r=62, t=top, b=46),
         **kw,
     )
     fig.update_xaxes(showgrid=False, showline=True, linecolor="#444", ticks="outside",
@@ -96,7 +100,7 @@ for col, color, name in [("free_share", BLUE, "Free variants"),
                              hovertemplate="%{y:.1%}<extra>" + name + "</extra>"), row=2, col=1)
 fig.update_yaxes(title_text="Open-weight share", tickformat=".0%", range=[0, 1], row=1, col=1)
 fig.update_yaxes(title_text="Share of tokens", tickformat=".0%", rangemode="tozero", row=2, col=1)
-style(fig, title="Open-weight models' share of OpenRouter tokens", height=660)
+style(fig, title="Open-weight models' share of OpenRouter tokens", height=680, legend_rows=2)
 write(fig, "1_share.qmd")
 
 # ---------------------------------------------------------------- 2. levels
@@ -159,7 +163,7 @@ fig.update_yaxes(title_text="Intelligence Index", row=1, col=1)
 fig.update_yaxes(title_text="log(closed / open)", row=2, col=1, secondary_y=False)
 fig.update_yaxes(title_text="Open share", tickformat=".0%", range=[0, 1], showgrid=False,
                  row=2, col=1, secondary_y=True)
-style(fig, title="The frontier on each side, and the relative gap", height=680)
+style(fig, title="The frontier on each side, and the relative gap", height=700, legend_rows=2)
 write(fig, "4_quality.qmd")
 
 # ---------------------------------------------------------------- 5. event study
@@ -220,7 +224,7 @@ fig.add_trace(go.Scatter(x=sp.index, y=sp["hhi_spend"], name="Concentration of s
                          hovertemplate="%{y:.2f}<extra>Spend HHI</extra>"), row=2, col=1)
 fig.update_yaxes(title_text="Open-weight share", tickformat=".0%", range=[0, 1], row=1, col=1)
 fig.update_yaxes(title_text="Herfindahl index", range=[0, 1], row=2, col=1)
-style(fig, title="Open models take the tokens; closed models take the money", height=680)
+style(fig, title="Open models take the tokens; closed models take the money", height=700, legend_rows=2)
 write(fig, "6_spend.qmd")
 
 print("\nAll figures written to", FIGS.resolve())
