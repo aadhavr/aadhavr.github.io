@@ -1,0 +1,149 @@
+---
+title: "One Announced Megawatt of AI Capacity Can Be 50% Bigger than Another."
+subtitle: "What does powered AI capacity cost, and why do prices differ between leases? Evidence from 41 signed leases in SEC filings."
+author: "Aadhav Rajesh"
+date: "2026-09-24"
+categories: [AI, energy economics]
+code-links:
+  - text: Code and data
+    href: https://github.com/aadhavr/ai-datacenter-leases
+    icon: github
+---
+
+AI companies talk about their capacity in megawatts, but almost nobody publishes what a megawatt costs. In this post, I analyzed 320 documents, almost all SEC filings, and found 41 signed data center leases, 33 of which disclose their terms. I found that the median lease charges about $157 per kilowatt of IT capacity per month, roughly $1.9 million per megawatt per year. Since 2024, prices have risen. Leases with weaker credit support tend to charge more. And an announcement of “a megawatt” in capacity can mean up to 50% more power in one “MW” than another. Let’s dive into it.
+
+Right now, compute is the bottleneck to this technology that has a transformative potential; the bottleneck of compute, is power. The owner of a scarce input, in this case power, should earn a rent, and leases are where we can observe that rent. Many landlords of powered data center capacity are former bitcoin miners and have former grid connections, and their tenants are neoclouds and hyperscalers (CoreWeave, Fluidstack, AWS, Anthropic, Meta). In this post, I ask, “What does powered capacity cost, and why do prices differ between leases?”
+
+I discuss power through megawatts, which can feel pretty abstracted to retail consumers of power. One megawatt is equal to a million watts (or a thousand kilowatts). Now, one kWh is an hour of electricity use at 1,000 watts, and it is probably the unit you see on your utility bill. A megawatt-hour is an hour of continuous consumption at 1,000 kilowatts. So, if you use 4 MW for three hours, that’s 12 MWh of energy. A typical large office building of 100,000+ sq ft uses roughly 2,000 MWh per year.[^1]
+
+[^1]: <https://help.stationa.com/faqs/what-is-a-megawatt-megawatt-hour>
+
+## The data
+
+There is no public price list for data center capacity, but there is an SEC paper trail. When a listed company signs a large lease, it usually has to tell investors, and it does so in an 8-K (or a 6-K for foreign issuers), often with a press release attached. Those filings are the source for every number in this post. I searched the full text of SEC filings from January 2024 to September 2026 with a set of phrases that lease announcements tend to use, such as "critical IT load" and "high-density colocation." A script downloaded each match and pulled out every sentence that mentions megawatts, dollar amounts, lease terms or tenant names. That produced 316 candidate documents. I added four more by hand: three Core Scientific filings for its original CoreWeave contracts and Galaxy's July 2026 release, which gives the price for all three phases of its Helios campus together. Most candidates were not leases at all: earnings releases, financing documents, acquisitions, or companies that were the tenant rather than the landlord. I kept one row per lease event and excluded the rest for a stated reason:
+
+| Reason for exclusion | Rows |
+|---|---|
+| Not a data center lease | 185 |
+| Duplicate of a lease already in the panel | 64 |
+| Portfolio totals, not a single lease | 13 |
+| Letter of intent, not a signed lease | 10 |
+| GPU cloud services contract (price includes the GPUs) | 4 |
+| Filer is the tenant, not the landlord | 3 |
+| Part of a package priced in another row | 3 |
+
+The result is 41 signed leases. Of these, 33 disclose enough to calculate a price; the other 8 are signed leases whose filings give megawatts or tenants but no contract value.
+
+For each lease, rent is the filed average annual revenue divided by megawatts, or, where only a total is given, the contract value divided by the term and by megawatts. I express it per kilowatt per month, the unit that data center leases are usually quoted in. I use critical IT load wherever the filing states it; leases that state megawatts without saying which kind are shown separately. Each lease is dated by its announcement (except the Galaxy Helios package, which is dated to the first phase because the later phases were signed on similar terms).
+
+For each lease, I recorded what the filing says about credit support (an investment-grade tenant, a parent guarantee, a third-party backstop, support that is still being arranged, or nothing) and about when the capacity is expected to be delivered. My background is not in finance, and I’m approaching this from a political-economic perspective, so I will explain what that means when we look at that analysis.
+
+Every value in the panel carries the exact sentence from the filing that supports it. A script downloads each filing, confirms that the sentence appears in it and that the number appears in the sentence, and records a hash of each file so that any later change is detectable. All 235 values pass. The dataset, the sentences and the code are available [https://github.com/aadhavr/ai-datacenter-leases](https://github.com/aadhavr/ai-datacenter-leases).
+
+This sample covers listed landlords that file with the SEC, mostly former bitcoin miners that turned their grid connections into AI data centers. It does not cover private landlords, hyperscaler self-builds or leases whose terms were never disclosed. I return to these limits at the end.
+
+## "A megawatt" is not one unit
+
+Every announcement in this market is stated in megawatts, but the megawatts are not all the same. Some filings report critical IT load (i.e., the power available to servers, networking and storage), while others report gross power (i.e., the utility capacity of the whole site, which also has to run cooling, power conversion and redundancy). Core Scientific's filings define the two separately, as total utility power capacity on one hand and total non-redundant customer IT load on the other.
+
+Ten leases in my panel state both numbers for the same lease in the same filing. The ratio of gross power to IT load runs from 1.10 to 1.52, with a median of 1.42. At the top of that range, Galaxy's Helios campus has 800 MW of gross power for 526 MW of critical IT load. I found it noteworthy that a headline of "800 MW" and a headline of "526 MW" could describe the same building.
+
+::: {#fig-gross}
+
+```{=html}
+{{< include figs/1_gross_to_it.html >}}
+```
+
+Gross power divided by critical IT load, for the ten leases whose filing states both numbers. Source: SEC filings.
+
+:::
+
+## The price
+
+When measuring per kilowatt of critical IT load, the median lease in the panel charges $157 per kW per month, or about $1.9 million per megawatt per year. The 27 leases that phrase power on an IT load basis have a price range from $104 to $229. The coefficient of variation is 0.18: there is clearly no single market price, but most leases sit within about $40 of the median.
+
+Six further leases state megawatts without saying which kind, and their median is $131, and I keep them separate throughout.
+
+::: {#fig-rent}
+
+```{=html}
+{{< include figs/2_rent_over_time.html >}}
+```
+
+Rent per kW of critical IT load per month, by announcement date. Filled dots state megawatts as IT load; hollow dots do not state the basis. Dot size is the lease's megawatts. Black segments are half-year medians of the IT-basis leases. Source: SEC filings.
+
+:::
+
+The spread in this chart is wide, but, as you can see, there is definitely an upward drift.
+
+Consider the tenant's side for a moment. CoreWeave earned between $8.3 million and $10.9 million of revenue per megawatt of active power per year in each quarter from Q1 2025 to Q2 2026, based off its reported revenue and active power. A lease at the median rent would take roughly a fifth of that. This comparison holds only if CoreWeave's active power is close to IT load, which is the inference we make from the previous section.
+
+## Why prices differ
+
+I hypothesized and tested three explanations, each with their own clear predictions.
+
+Firstly, scarcity. If powered land is getting scarcer, leases signed later should cost more and they do, mostly. Half-year medians rise from $116 in the second half of 2024 to $156 through 2025 and $176 in the second half of 2026, and the rank correlation between rent and announcement date is 0.49. The one exception is the first half of 2026, when the median falls to $139. That half includes two Applied Digital leases with an investment-grade hyperscaler (about $138 each) and two Riot leases to AMD ($104 and $108). Both of which sit at the low end of the panel for reasons that have little to do with timing. The Applied Digital leases are with an investment-grade hyperscaler, and, as the next section shows, the strongest tenants pay the lowest rents. The Riot leases are small (25 MW each), they retrofit a building that Riot already owned, and the tenant is AMD, a chipmaker rather than a neocloud. Given that in the half-year there were seven leases, four low-priced leases are enough to pull the median down.
+
+Secondly, risk. If landlords price credit risk, leases with stronger tenants or firmer guarantees should cost less. I classified each lease by the credit support that its filing states:
+
+| Credit support in the filing | Leases | Median rent ($/kW-month) |
+|---|---|---|
+| Tenant is investment-grade | 6 | $147 |
+| Parent guarantee | 2 | $150 |
+| Third-party backstop | 5 | $159 |
+| None stated | 10 | $157 |
+| Anticipated, not yet final | 4 | $198 |
+
+Okay, I promised to explain what these terms mean, so here it is.
+
+Investment-grade tenants’ filings say the tenant has an investment-grade credit rating, which means rating agencies judge it very likely to pay its debts (BBB- or higher at S&P, or Baa3 or higher at Moody's). No one else needs to guarantee the lease.
+
+Parent guaranteed tenants are a subsidiary, and its parent company promises to pay if the subsidiary does not. For example, Amazon.com guarantees the leases of its data center subsidiary at Cipher, and G42 guarantees the lease of its subsidiary Core42 at TeraWulf.
+
+Third-party backstops are when a separate company promises to cover the rent if the tenant defaults. Google backstops several Fluidstack leases, and I touch on this in more detail below.
+
+In filings labelled “anticipated, not yet final,” the filing says that credit support is expected, for example when backstop or letters of credit are still being negotiated, and was not in place when the lease was announced.
+
+And lastly, some filings, labelled “none stated,” had no guarantees and said nothing about the tenant's credit. This does not mean that the lease has no protection, just that the filing does not disclose any.
+
+::: {#fig-credit}
+
+```{=html}
+{{< include figs/3_rent_by_credit.html >}}
+```
+
+Rent per kW of critical IT load per month, by the credit support stated in the filing. IT-basis leases only; black lines are medians. Source: SEC filings.
+
+:::
+
+The pattern at the ends is consistent with risk pricing. Investment-grade tenants pay the least, and leases whose credit support was still being arranged pay the most. The middle groups are close together, and the "none stated" group is really a few groups: early CoreWeave contracts, the Riot-AMD leases at $104 to $108, and small recent leases with newer neoclouds at $156 to $229.
+
+Lastly, speed. If time to power is valuable, leases that deliver sooner should cost more. The data does not show this, though. The rank correlation between rent and months to first delivery is -0.12 across 21 leases, and the lease term shows a weak positive relation (0.24) which is not what a simple risk story would predict (i.e., a negative one).
+
+All four leases with only anticipated credit support were signed in the second half of 2026, the period with the highest median. The dip in early 2026 comes partly from investment-grade tenants. With 27 leases, I cannot separate a rising price over time from a changing mix of tenants. Both these explanations fit, and both are likely true and are consistent with each hypothesis.
+
+## So, who’s carrying the risk
+
+The leases have a fairly clear structure. Landlords sign long take-or-pay contracts (most leases in the panel run 10 to 20 years). Take CoreWeave, the largest tenant in the panel. At the end of 2025, its committed customer contracts had a weighted-average duration of about five years, and it depreciates its data center computing equipment over six years. Its own operating leases, by contrast, had a weighted-average remaining term of 11 years. The tenant owes rent for roughly twice as long as it has customers under contract or GPUs on its books. And, at the end of June 2026, CoreWeave carried $16.3 billion of operating lease liabilities.
+
+That’s where third parties come in. For example, in Cipher's Barber Lake site Google agreed to backstop $1.4 billion of the lease obligations. At Core Scientific, AMD provides credit support for leases to a neocloud tenant. In both cases, a company with a strong balance sheet takes on part of the tenant's risk, which helps the landlord finance construction.
+
+In economic terms, the landlord earns a fixed rent on the scarce input for a decade or more and the tenant holds the residual. The tenant gains if compute prices stay high and loses if they fall faster than its lease obligations.
+
+## What it means
+
+For providers and their customers, the panel I have constructed provides a benchmark. Powered AI capacity from listed landlords costs about $1.9 million per megawatt of IT load per year, with most leases between about $1.4 million and $2.4 million. It also offers a warning: comparing capacity or cost per megawatt means nothing until leases use the same definition of a megawatt.
+
+For economists, the evidence is consistent with a scarcity rent that has risen over time, and with credit risk priced into rents at the extremes. It is also a clear case of a new factor market in which prices are dispersed but not chaotic, which is roughly what you would expect in a market that is two years old.
+
+## Limits and next steps
+
+This sample only covers listed landlords that file with the SEC, and only the 80% of signed leases which disclose price terms. Private landlords and hyperscaler self-builds are missing. Contract values often include annual escalators, so each rent is an average over the base term, not the first-year price. Additionally, several rows in my data are two or three leases signed together, which I count as one observation.
+
+As far next steps go, I would like to compare the megawatts in these filings with satellite-based estimates of what has actually been built, such as Epoch AI's data center explorer, to measure the gap between contracted capacity and capacity that exists.
+
+## Appendix
+
+Each value has an evidence sentence from its filing. A script checks that the sentence is in the downloaded filing and that the value is in the sentence. Each filing is stored with a SHA-256 hash.
+
+Data and code. [https://github.com/aadhavr/ai-datacenter-leases](https://github.com/aadhavr/ai-datacenter-leases)
