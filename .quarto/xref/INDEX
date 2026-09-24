@@ -37,5 +37,11 @@
   },
   "posts/open-router/figs/5_event.qmd": {
     "5_event.html": "c8b52aea"
+  },
+  "devdle/index.qmd": {
+    "index.html": "c7d334e4"
+  },
+  "posts/ai-datacenter-leases/index.qmd": {
+    "index.html": "1ac8f0a8"
   }
 }

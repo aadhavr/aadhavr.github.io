@@ -2,6 +2,7 @@
   {
     "listing": "/writing.html",
     "items": [
+      "/posts/ai-datacenter-leases/index.html",
       "/posts/open-router/index.html",
       "/posts/sci-colonial/index.html",
       "/posts/token-premium/index.html"
