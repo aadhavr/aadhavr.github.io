@@ -1,6 +1,6 @@
 ---
 title: "One Announced Megawatt of AI Capacity Can Be 50% Bigger than Another."
-subtitle: "What does powered AI capacity cost, and why do prices differ between leases? Evidence from 41 signed leases in SEC filings."
+subtitle: "What does powered AI capacity cost, and why do prices differ between leases? Evidence from 41 signed leases in SEC filings"
 author: "Aadhav Rajesh"
 date: "2026-09-24"
 categories: [AI, energy economics]

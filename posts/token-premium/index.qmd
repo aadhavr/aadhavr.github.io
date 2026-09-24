@@ -1,5 +1,5 @@
 ---
-title: "Prompting LLMs in the Arabic script is 2x cheaper if you speak Arabic vs. Acehnese."
+title: "Prompting LLMs in the Arabic script is 2x cheaper if you speak Arabic vs. Acehnese"
 subtitle: "Tokenizers price language-script pairings, not languages or scripts: evidence from 203 languages and 6 production tokenizers"
 author: "Aadhav Rajesh"
 date: 2026-09-19
