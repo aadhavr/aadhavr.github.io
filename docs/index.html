@@ -46,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-5ece0e4a5ffbf02e28d4d657a8c77456.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-06cf24472b1596716e9783a6fc082fae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8ff6fbc74d1bd49bc47af8b0983d3d2d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -96,6 +96,10 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
+    <a class="nav-link" href="./givedle/index.html"> 
+<span class="menu-text">Givedle</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./writing.html"> 
 <span class="menu-text">Writing</span></a>
   </li>  
@@ -144,6 +148,18 @@ ul.task-list li input[type="checkbox"] {
 
 
 </main> <!-- /main -->
+<!-- Optional: stop the navbar glow after today's Givedle is finished.
+     Add to _quarto.yml under format: html: include-after-body: navbar/givedle-nav.html -->
+<script>
+(function () {
+  try {
+    var s = JSON.parse(localStorage.getItem("devdle-gw:v1") || "{}");
+    var n = new Date(), start = Date.UTC(2026, 8, 23); // must match startDate in givedle.js
+    var day = Math.floor((Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) - start) / 864e5);
+    if (s.days && s.days[day] && s.days[day].done) document.documentElement.classList.add("givedle-played");
+  } catch (e) {}
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

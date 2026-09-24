@@ -1,0 +1,106 @@
+/* Givedle — matches aadhavrajesh.com (custom.scss): IBM Plex Sans, ink/muted/rule, link blue, 1px rules.
+   Green is used only for "correct". The fallbacks let the preview work outside the site. */
+.gv {
+  --gv-ink: var(--ink, #111317);
+  --gv-muted: var(--muted, #5A6068);
+  --gv-rule: var(--rule, #DCDEE1);
+  --gv-page: var(--page, #FFFFFF);
+  --gv-tint: #F7F8F9;          /* same as the site's code-block background */
+  --gv-link: #1F5FA8;          /* site link colour: used for the funding bar */
+  --gv-hit: #2E7550;           /* muted green, correct only */
+  --gv-miss: #9AA0A6;
+  font-family: inherit;
+  color: var(--gv-ink);
+  margin: 0.5rem 0 3rem;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.gv *, .gv *::before, .gv *::after { box-sizing: border-box; }
+.gv button { font: inherit; color: inherit; cursor: pointer; }
+.gv :focus-visible { outline: 2px solid var(--gv-link); outline-offset: 2px; border-radius: 1px; }
+.gv [hidden] { display: none !important; }
+
+/* meta line under the page title */
+.gv .dv-head { border-bottom: 1px solid var(--gv-rule); padding-bottom: 0.6rem; margin-bottom: 1.2rem; }
+.gv .dv-meta { display: flex; align-items: baseline; gap: 1.2rem; font-size: 0.8rem; color: var(--gv-muted); }
+.gv .dv-meta span { white-space: nowrap; }
+.gv .dv-help {
+  margin-left: auto; background: none; border: 0; padding: 0; font-size: 0.8rem; color: var(--gv-link);
+  text-decoration: underline; text-decoration-thickness: 0.6px; text-underline-offset: 0.16em;
+  text-decoration-color: rgba(31, 95, 168, 0.32);
+}
+.gv .dv-help:hover { text-decoration-color: currentColor; }
+
+/* progress */
+.gv .gw-dots { display: flex; gap: 0.35rem; margin: 0 0 1.4rem; }
+.gv .gw-dot { flex: 1; height: 3px; background: var(--gv-rule); transition: background 0.3s; }
+.gv .gw-dot.is-now { background: var(--gv-ink); }
+.gv .gw-dot[data-s="hit"] { background: var(--gv-hit); }
+.gv .gw-dot[data-s="miss"] { background: var(--gv-miss); }
+
+/* question and cards */
+.gv .gw-q { font-weight: 600; font-size: 1.06rem; letter-spacing: -0.01em; margin: 0 0 0.9rem; }
+.gv .gw-verdict { font-size: 1.3rem; }
+.gv .gw-pair { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0.8rem; align-items: stretch; }
+.gv .gw-vs { align-self: center; font-size: 0.8rem; color: var(--gv-muted); }
+.gv .gw-card {
+  display: flex; flex-direction: column; gap: 0.6rem; text-align: left; padding: 1rem 1.05rem;
+  border: 1px solid var(--gv-rule); border-radius: 2px; background: var(--gv-page); color: var(--gv-ink);
+  line-height: 1.35; animation: gv-in 0.2s ease both;
+}
+.gv button.gw-card { transition: border-color 0.12s, background 0.12s; }
+@media (hover: hover) { .gv button.gw-card:hover { border-color: var(--gv-ink); background: var(--gv-tint); } }
+.gv .gw-card[data-s="hit"] { border-color: var(--gv-hit); box-shadow: inset 3px 0 0 var(--gv-hit); }
+.gv .gw-card[data-s="miss"] { border-color: var(--gv-miss); }
+.gv .gw-top { display: flex; gap: 0.55rem; align-items: center; }
+.gv .gw-icon { font-size: 1.3rem; line-height: 1; }
+.gv .gw-prog { font-weight: 600; font-size: 0.9rem; line-height: 1.2; }
+.gv .gw-org { font-size: 0.74rem; color: var(--gv-muted); }
+.gv .gw-place { font-weight: 600; font-size: 1.3rem; letter-spacing: -0.014em; line-height: 1.15; }
+.gv .gw-clues { display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.6rem; margin: 0; font-size: 0.78rem; border-top: 1px solid var(--gv-rule); padding-top: 0.55rem; }
+.gv .gw-clues dt { color: var(--gv-muted); font-weight: 400; }
+.gv .gw-clues dd { margin: 0; font-weight: 500; text-align: right; }
+.gv .gw-val { font-weight: 600; font-size: 1.9rem; letter-spacing: -0.02em; line-height: 1; margin-top: auto; }
+.gv .gw-card[data-s="hit"] .gw-val { color: var(--gv-hit); }
+
+/* bars: ink fill, blue line = GiveWell's bar */
+.gv .gw-track { position: relative; height: 5px; background: var(--gv-tint); border-bottom: 1px solid var(--gv-rule); }
+.gv .gw-fill { position: absolute; inset: 0 auto 0 0; background: var(--gv-ink); animation: gv-grow 0.5s ease-out both; }
+.gv .gw-card[data-s="hit"] .gw-fill { background: var(--gv-hit); }
+.gv .gw-bar { position: absolute; top: -4px; bottom: -4px; width: 1.5px; background: var(--gv-link); }
+.gv .gw-note { color: var(--gv-muted); font-size: 0.88rem; margin: 1rem 0; max-width: 40em; }
+
+/* buttons: quiet, like the site */
+.gv .dv-go, .gv .dv-share {
+  font-weight: 500; font-size: 0.86rem; padding: 0.45rem 1rem; border-radius: 2px;
+  border: 1px solid var(--gv-ink); background: var(--gv-ink); color: var(--gv-page) !important;
+}
+.gv .dv-go:hover, .gv .dv-share:hover { background: #2A2E35; }
+.gv .gw-next { display: block; margin: 0 0 0 auto; }
+
+/* results */
+.gv .dv-verdict { font-weight: 600; font-size: 1.3rem; letter-spacing: -0.014em; margin: 0 0 0.3rem; }
+.gv .gw-chart { margin: 0.6rem 0 1rem; border-top: 1.2px solid var(--gv-ink); border-bottom: 1.2px solid var(--gv-ink); padding: 0.4rem 0; }
+.gv .gw-row { display: grid; grid-template-columns: minmax(0, 14rem) 1fr 3rem; gap: 0.8rem; align-items: center; font-size: 0.78rem; padding: 0.3rem 0; }
+.gv .gw-rlabel { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gv .gw-rval { font-weight: 600; text-align: right; }
+.gv .gw-fine { font-size: 0.74rem; color: var(--gv-muted); margin: 0.3rem 0; line-height: 1.5; }
+.gv .dv-foot { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.2rem; padding-top: 0.9rem; border-top: 1px solid var(--gv-rule); }
+.gv .dv-next { font-size: 0.8rem; color: var(--gv-muted); }
+
+/* dialog */
+.gv .dv-dialog { max-width: 28rem; width: calc(100% - 2rem); border: 1px solid var(--gv-rule); border-radius: 2px; padding: 1.4rem 1.5rem; color: var(--gv-ink); box-shadow: 0 12px 32px rgba(17, 19, 23, 0.12); }
+.gv .dv-dialog::backdrop { background: rgba(17, 19, 23, 0.3); }
+.gv .dv-dialog h2 { font-size: 1.2rem; font-weight: 600; margin: 0 0 0.7rem; padding: 0; border: 0; }
+.gv .dv-dialog p { font-size: 0.9rem; margin: 0 0 0.7rem; }
+.gv .dv-close { margin-top: 0.4rem; }
+.gv .gw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@keyframes gv-in { from { opacity: 0; transform: translateY(4px); } }
+@keyframes gv-grow { from { width: 0; } }
+@media (prefers-reduced-motion: reduce) { .gv .gw-card, .gv .gw-fill { animation: none; } }
+@media (max-width: 560px) {
+  .gv .gw-pair { grid-template-columns: 1fr; }
+  .gv .gw-vs { justify-self: center; }
+  .gv .gw-row { grid-template-columns: 1fr 3rem; }
+  .gv .gw-row .gw-rlabel { grid-column: 1 / -1; }
+}

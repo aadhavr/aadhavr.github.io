@@ -1,0 +1,15 @@
+---
+title: "Givedle"
+subtitle: "A daily game about where a dollar spent on an intervention does the most good, based on GiveWell's cost-effectiveness estimates."
+toc: false
+css: givedle.css
+resources:
+  - givedle.js
+  - givewell_ce.js
+---
+
+::: {#givedle}
+:::
+
+<script src="givewell_ce.js"></script>
+<script src="givedle.js"></script>

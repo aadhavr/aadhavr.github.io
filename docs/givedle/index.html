@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A daily guessing game about development interventions.">
 
-<title>DEVdle – Aadhav Rajesh</title>
+<title>Givedle – Aadhav Rajesh</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -47,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-5ece0e4a5ffbf02e28d4d657a8c77456.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-5a896630d775b1b778b613349badfe76.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8ff6fbc74d1bd49bc47af8b0983d3d2d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,12 +74,12 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<link rel="stylesheet" href="devdle.css">
 
 
+<link rel="stylesheet" href="givedle.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed fullcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -97,6 +96,10 @@ ul.task-list li input[type="checkbox"] {
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../givedle/index.html" aria-current="page"> 
+<span class="menu-text">Givedle</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../writing.html"> 
 <span class="menu-text">Writing</span></a>
@@ -121,27 +124,51 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
-    </div>
+    
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7">DEVdle</h1></header>
+<main class="content" id="quarto-document-content">
 
-<header id="title-block-header">
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Givedle</h1>
+<p class="subtitle lead">A daily game about where a dollar spent on an intervention does the most good, based on GiveWell’s cost-effectiveness estimates.</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
 
 
 </header>
 
 
-<div id="devdle">
+<div id="givedle">
 
 </div>
-<script src="interventions.js"></script>
-<script src="devdle.js"></script>
+<script src="givewell_ce.js"></script>
+<script src="givedle.js"></script>
 
 
 
 </main> <!-- /main -->
+<!-- Optional: stop the navbar glow after today's Givedle is finished.
+     Add to _quarto.yml under format: html: include-after-body: navbar/givedle-nav.html -->
+<script>
+(function () {
+  try {
+    var s = JSON.parse(localStorage.getItem("devdle-gw:v1") || "{}");
+    var n = new Date(), start = Date.UTC(2026, 8, 23); // must match startDate in givedle.js
+    var day = Math.floor((Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) - start) / 864e5);
+    if (s.days && s.days[day] && s.days[day].done) document.documentElement.classList.add("givedle-played");
+  } catch (e) {}
+})();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

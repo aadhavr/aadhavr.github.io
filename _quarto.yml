@@ -11,6 +11,8 @@ website:
   site-url: https://www.aadhavrajesh.com
   navbar:
     right:
+      - text: Givedle
+        href: givedle/index.qmd
       - text: Writing
         href: writing.qmd
       - text: CV
@@ -38,6 +40,7 @@ format:
       body-width: 690px
       sidebar-width: 200px
       margin-width: 180px
+    include-after-body: navbar/givedle-nav.html
 
 execute:
   freeze: auto

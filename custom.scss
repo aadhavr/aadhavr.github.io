@@ -335,3 +335,25 @@ main.content > p:first-of-type {
   .bio { grid-template-columns: 1fr; gap: 1.7rem; }
   .bio-photo img { width: 180px; height: 180px; }
 }
+
+/* ---------- navbar: Wordle-green glow (#6AAA64) behind the Givedle link ----------
+   Paste at the end of custom.scss (in the scss:rules section). Replaces the earlier versions.
+   The text keeps the normal navbar colours (muted, ink on hover); only the glow is green. */
+.navbar .nav-link[href*="givedle/"] .menu-text {
+  text-shadow:
+    0 0 4px  rgba(106, 170, 100, 0.75),
+    0 0 10px rgba(106, 170, 100, 0.7),
+    0 0 20px rgba(106, 170, 100, 0.45);
+  transition: text-shadow 0.25s ease;
+}
+.navbar .nav-link[href*="givedle/"]:hover .menu-text {
+  text-shadow:
+    0 0 4px  rgba(106, 170, 100, 0.95),
+    0 0 12px rgba(106, 170, 100, 0.9),
+    0 0 26px rgba(106, 170, 100, 0.6);
+}
+/* after today's game is finished (class set by givedle-nav.html), no glow at all */
+html.givedle-played .navbar .nav-link[href*="givedle/"] .menu-text,
+html.givedle-played .navbar .nav-link[href*="givedle/"]:hover .menu-text {
+  text-shadow: none;
+}

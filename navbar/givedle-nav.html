@@ -1,0 +1,12 @@
+<!-- Optional: stop the navbar glow after today's Givedle is finished.
+     Add to _quarto.yml under format: html: include-after-body: navbar/givedle-nav.html -->
+<script>
+(function () {
+  try {
+    var s = JSON.parse(localStorage.getItem("devdle-gw:v1") || "{}");
+    var n = new Date(), start = Date.UTC(2026, 8, 23); // must match startDate in givedle.js
+    var day = Math.floor((Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) - start) / 864e5);
+    if (s.days && s.days[day] && s.days[day].done) document.documentElement.classList.add("givedle-played");
+  } catch (e) {}
+})();
+</script>
