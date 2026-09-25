@@ -1,0 +1,253 @@
+---
+title: "Using Satellites to Find Human Trafficking in Fleets at Sea"
+subtitle: "Testing a forced-labor detection model on high-risk fishing vessels identified after it was built"
+author: "Aadhav Rajesh"
+date: "2026-09-25"
+categories: [political economy, interventions]
+execute:
+  echo: false
+  warning: false
+  message: false
+code-links:
+  - text: Code and data
+    href: https://github.com/aadhavr/fleets-not-boatss
+    icon: github
+resources:
+  - port_explorer.html
+---
+
+```{r setup}
+library(readr)
+library(dplyr)
+library(plotly)
+
+ink  <- "#1b2a3a"
+font <- list(family = "IBM Plex Sans, Helvetica Neue, Arial, sans-serif", size = 13, color = ink)
+tidy <- function(p) p |> layout(hovermode = "closest") |> config(displayModeBar = FALSE, responsive = TRUE)
+pct  <- function(x) paste0(round(100 * x), "%")
+gear_label <- c(squid_jigger = "Squid jiggers", drifting_longlines = "Longliners", trawlers = "Trawlers")
+```
+
+```{=html}
+<iframe src="port_explorer.html" title="Port explorer: port visits by squid jiggers and longliners, weighted by fleet forced-labor risk"
+        style="width:100%; height:760px; border:1px solid #c9d4da; border-radius:4px;" loading="eager"></iframe>
+<p><small>Interactive: where high-risk fishing fleets came into port in 2024. <a href="port_explorer.html" target="_blank" rel="noopener">Open the port explorer in a full window</a>, or <a href="#port-explorer">read how it works</a>.</small></p>
+```
+
+In 2021, a team of researchers published a paper in *PNAS* with a striking claim: satellite data on how fishing vessels move can reveal which ones are likely using forced labor. The paper, "Satellites can reveal global extent of forced labor in the world's fishing fleet" by McDonald et al., trained a machine-learning model on vessels with reported labor abuses and applied it to about 16,000 vessels.[^1] Between 14% and 26% of them came out as high risk.
+
+The authors found 193 reported cases of forced labor, but only a fraction of those vessels had enough satellite data to use, and the baseline model trained on 21 of them. A critical reply in the same journal (Swartz et al., 2021)[^2] raised concerns about the small dataset, the model's assumptions, and how it was validated, pointing out that the same 21 cases were used both to train the model and to evaluate it. (The authors responded in a reply of their own[^3]).
+
+Forced labor at sea is one of the hardest human trafficking-linked abuses to detect. Workers are recruited with false promises, charged fees they can't repay, and put on vessels that don't return to port for months. If satellites could point inspectors to the vessels where this happens, it would change how we address it.
+
+Five years later, and we can test whether they can with the new cases since then. Since the paper was written, journalists and U.S. Customs have identified dozens of fishing vessels with forced labor on board. The model never saw them. So I asked a simple question: did it flag them before anyone else did?
+
+My answer: not in the way the paper suggests, but yes in a way that matters more for policy. The model can tell you which fleets to worry about. It can't tell you which boats in those fleets are the problem. That distinction should inform how governments use this kind of tool.
+
+## How the model works
+
+The model uses Automatic Identification System (AIS) data, the position signals that most large vessels broadcast, processed by Global Fishing Watch[^4]. For each vessel and year, it calculates features like how far the vessel went from port, how many hours it fished on the high seas, how often its signal went dark for more than 24 hours, how many port visits it made, and how often it loitered at sea. It also includes vessel traits like engine power, gear type, and flag.
+
+The model is a random forest trained with positive-unlabeled (PU) learning, a method for data where you know some positives but can't be sure the rest are negative. Most vessels without a report aren't confirmed clean and are just unlabeled. To handle this, the model is trained 100 times, each time on all 21 known cases plus an equal-sized random sample of unlabeled vessels, and the 100 results are averaged. The output is a risk score from 0 to 1 for every vessel in every year from 2012 to 2018.
+
+## The new cases
+
+I collected vessels identified after the model's training data from two sources:
+
+1. U.S. Customs and Border Protection, which has issued Withhold Release Orders against individual fishing vessels, and one against an entire fleet, since 2020.[^5] These orders block imports and rest on a government investigation.
+2. The Outlaw Ocean Project, whose investigation of China's distant-water fleet tagged 35 vessels with documented forced labor in its public vessel database.[^6]
+
+I matched each vessel to its identity in Global Fishing Watch, using IMO numbers where possible, and checked every one against the original paper's case database. One vessel appeared in both sources, so I counted it once. I removed one vessel that was already in the paper's data, one Customs case that matched two different vessels with the same name, one vessel I couldn't find in the satellite records, and the fleet-wide order, which names a company rather than specific vessels. That left 36 new cases. Sixteen of them had data in 2018, the last year the model scored.
+
+These 16 vessels are the test: 13 squid jiggers and 3 longliners, flagged to China, Taiwan, Fiji, and Vanuatu.
+
+## Rebuilding the model
+
+The authors published their code and data[^7], which is what made this possible, and kept their vessel-level scores anonymous, deliberately, to protect vessels from false accusations, so I didn't try to reverse that in this analysis. I retrained the model from their public training data using the exact settings in their code: the same 66,368 vessel-years, the same 21 positive cases, the same preprocessing, and the same random forest with 100 bags and 1,000 trees.
+
+The rebuilt model tracks the original closely. For the known forced-labor vessels, where the published file keeps a non-anonymous ID, my scores correlate with the authors' at 0.88. The pattern across gear types matches, with squid jiggers scoring the highest, longliners in the middle, and trawlers scoring the lowest. It isn't identical since random forests trained on 21 positives vary from run to run, so I reran every test with five different random seeds and the results moved by less than 0.02.
+
+## The model flagged every squid-jigger case, and also most squid jiggers
+
+In my rebuild, all 13 new squid-jigger cases scored above the paper's high-risk threshold from 2018. On its face, that's a perfect record. However, look at the base rate; even in the authors' own published predictions, 75% of all squid jiggers in 2018 are high risk. A model that flags three out of four vessels in a fleet will catch most cases in that fleet almost by default.
+
+```{r base-rate}
+#| fig-height: 4.2
+b <- read_csv("data/base_rate_2018.csv", show_col_types = FALSE) |>
+  mutate(gear = factor(gear_label[gear], levels = gear_label),
+         share_cases = cases_flagged / cases)
+bc <- filter(b, !is.na(cases))
+plot_ly(b, x = ~gear, y = ~share_fleet, type = "bar", name = "All vessels (authors' predictions)",
+        marker = list(color = "#9aa5b1"), text = ~pct(share_fleet), textposition = "outside",
+        hovertemplate = "%{x}: %{y:.0%} of vessels rated high risk<extra></extra>") |>
+  add_trace(data = bc, x = ~gear, y = ~share_cases, type = "scatter", mode = "markers+text",
+            name = "Later-identified cases (rebuild)", inherit = FALSE,
+            marker = list(color = "#c0392b", size = 14),
+            text = ~paste0(cases_flagged, " of ", cases, " new cases"), textposition = "middle right",
+            textfont = list(color = "#c0392b"),
+            hovertemplate = "%{text} rated high risk<extra></extra>") |>
+  layout(title = list(text = "<b>The model flags most of the fleet, not just the cases</b>", x = 0.02),
+         yaxis = list(title = "", tickformat = ".0%", range = c(0, 1.1)),
+         xaxis = list(title = ""), legend = list(orientation = "h", y = -0.15),
+         font = font, margin = list(t = 50)) |>
+  tidy()
+```
+
+<small>Grey bars: McDonald et al. (2021) published predictions, 2018. Red points: my rebuild of the same model, at the paper's threshold (0.57). No later-identified trawlers had 2018 data.</small>
+
+The next question is whether the model found a way to tell the real cases apart from all the other vessels it flagged. Among vessels it already considers risky, can it rank the ones that were later found above the rest?
+
+## Across fleets, this model beats simple rules
+
+Compared with every other vessel in 2018 (12,784 vessel-years), the model ranks the new cases very well. Its AUC, the probability that a randomly chosen case scores higher than a randomly chosen other vessel, is 0.89.
+
+That's better than simple inspection rules built from the same training data. (A rule that uses only gear type gets 0.75, and a rule that uses gear type and flag gets 0.80).
+
+The model's advantage over both is clear: 0.14 over gear alone (95% confidence interval 0.09 to 0.18) and 0.09 over gear and flag (0.04 to 0.13). It is able to separate high-risk groups of vessels from the rest better than a blunt rule would.
+
+## Inside a fleet, the signal disappears
+
+The harder test compares each case only with vessels of the same gear *and* the same flag, so Chinese squid jiggers against other Chinese squid jiggers. Here the model does no better than chance.
+
+The combined AUC is 0.48 (95% confidence interval 0.34 to 0.62). In the largest group, 13 cases among 506 Chinese squid jiggers, it's 0.53. The median score for the cases was 0.672. For the other vessels, 0.668.
+
+```{r within-fleet}
+#| fig-height: 3.8
+w <- read_csv("data/within_fleet_2018.csv", show_col_types = FALSE)
+set.seed(3)
+w <- w |> mutate(row = if_else(group == "Later-identified cases", 1, 0),
+                 y = row + runif(n(), -0.15, 0.15))
+labs_y <- w |> count(group, row) |> mutate(lab = paste0(group, " (n = ", n, ")"))
+cols <- c("Rest of the fleet" = "#9aa5b1", "Later-identified cases" = "#c0392b")
+p <- plot_ly()
+for (g in names(cols)) {
+  d <- filter(w, group == g)
+  p <- p |>
+    add_trace(data = d, x = ~score, y = ~row, type = "box", orientation = "h",
+              boxpoints = FALSE, fillcolor = "rgba(0,0,0,0)", line = list(color = "#4d5d6c"),
+              width = 0.45, hoverinfo = "skip", showlegend = FALSE) |>
+    add_trace(data = d, x = ~score, y = ~y, type = "scatter", mode = "markers",
+              marker = list(color = cols[[g]], size = if (g == "Rest of the fleet") 6 else 10,
+                            opacity = if (g == "Rest of the fleet") 0.45 else 0.9),
+              hovertemplate = "Risk score %{x:.3f}<extra></extra>", showlegend = FALSE)
+}
+p |>
+  layout(title = list(text = "<b>Inside the fleet, the cases look like everyone else</b><br><sup>2018 risk scores for Chinese-flagged squid jiggers</sup>", x = 0.02),
+         xaxis = list(title = "Risk score", range = c(0.2, 0.8)),
+         yaxis = list(title = "", tickvals = labs_y$row, ticktext = labs_y$lab, range = c(-0.6, 1.6),
+                      zeroline = FALSE, showgrid = FALSE),
+         shapes = list(list(type = "line", x0 = 0.57, x1 = 0.57, y0 = 0, y1 = 1, yref = "paper",
+                            line = list(dash = "dash", color = "#7f8c9a"))),
+         annotations = list(list(x = 0.57, y = 1.02, yref = "paper", text = "high-risk threshold",
+                                 showarrow = FALSE, xanchor = "right", font = list(size = 11, color = "#7f8c9a"))),
+         font = font, margin = list(t = 70)) |>
+  tidy()
+```
+
+<small>Scores from my rebuild of McDonald et al. (2021). Median score: cases 0.672, rest of fleet 0.668. Within-fleet AUC = 0.53.</small>
+
+This matters because of how the cases were found. Most came from one investigation of one country's fleet, so any model that rates that fleet highly will look good against the whole world. The same-fleet comparison removes most of that effect, and when it does, no detectable signal remains.
+
+Some case vessels were tagged by investigators for AIS transmission gaps, a behavior the model also uses. If investigators and the model were looking at the same signal, the test could flatter the model. Removing those vessels didn't change the within-gear result.
+
+The model does push a small number of vessels into a low-risk tail, and none of the cases are there. But inside the main cluster, where almost all of the fleet sits, the cases are spread across it like everyone else.
+
+Another way to see this is to imagine an inspector working through the 519 Chinese squid jiggers in order of risk score, highest first. After checking the top quarter of the fleet, they would have found 3 of the 13 later cases. Checking vessels in random order would find about the same number (3.2).
+
+```{r inspector}
+#| fig-height: 5
+ic <- read_csv("data/inspector_curve_2018.csv", show_col_types = FALSE)
+plot_ly(ic, x = ~share_inspected, y = ~share_found, type = "scatter", mode = "lines",
+        line = list(shape = "hv", color = "#e74c3c", width = 3),
+        name = "Checking the highest risk scores first",
+        hovertemplate = "Inspected %{x:.0%} of the fleet: found %{y:.0%} of later cases<extra></extra>") |>
+  add_trace(x = c(0, 1), y = c(0, 1), mode = "lines", inherit = FALSE, type = "scatter",
+            line = list(dash = "dash", color = "#7f8c9a"), name = "Checking at random",
+            hoverinfo = "skip") |>
+  layout(title = list(text = "<b>Ranking by risk score finds cases no faster than chance</b><br><sup>An inspector checks 519 Chinese squid jiggers (2018). 13 of them were later found with forced labor.</sup>", x = 0.02),
+         xaxis = list(title = "Share of the fleet inspected", tickformat = ".0%"),
+         yaxis = list(title = "Share of later cases found", tickformat = ".0%"),
+         legend = list(orientation = "h", y = -0.2), font = font, margin = list(t = 70)) |>
+  tidy()
+```
+
+<small>Scores from my rebuild of McDonald et al. (2021). Cases: U.S. CBP and the Outlaw Ocean Project.</small>
+
+## Later data points the same way
+
+To use more of the new cases, I rebuilt the model's inputs for 2019-2022 from Global Fishing Watch's public data and applied the unchanged model. When I computed the same inputs for 2018, the resulting scores correlated at 0.92 with scores from the authors' original data. Of the 36 new cases, 28 had data in those years and used one of the three gear types the model covers.
+
+The public data doesn't include vessel characteristics like engine power and crew size for the newest vessels, so I gave every vessel the typical values for its gear and flag. Within the same gear and flag, the model does slightly better than chance: an AUC of 0.61, with a 95% interval of 0.50 to 0.71.
+
+For the 16 vessels that also appear in the 2018 test, it's 0.59, and the interval includes chance. Removing the cases that investigators flagged for AIS gaps brings it to 0.58, again with an interval that includes chance. So the later data points the same way as the 2018 test: at best, a weak signal about individual boats.
+
+## Vessels that change their identity
+
+While matching the cases to satellite records, I realized how slippery vessel identity is. One vessel sailed under two different names on the same IMO number. Another was renamed in 2023. Six vessels from the same numbered series moved to the Kenyan flag within weeks of each other in mid-2020. One IMO number appeared on more than 15 different transponder IDs, some of them registered to other countries. Changing names, flags, and transponder numbers is a known way to avoid scrutiny and it's also part of why vessel-level detection from satellite data is hard given the model scores a transponder ID, not a ship.
+
+## What this means for forced-labor prevention policy
+
+The debate about satellite detection of forced labor has mostly been about whether the models are accurate. But, what kind of decision is the model accurate enough to support? With the evidence analyzed here, I argue the answer is decisions about fleets and ports, not decisions about boats. I think that points to four changes.
+
+1. Use satellites to decide where inspectors go, but not to accuse ships. The model separates high-risk fleets from the rest better than simple rules do and the traffic is concentrated. In 2018, ports in five countries and territories received 54% of all port visits by vessels the model rated high risk. I want to be very clear that we should not use a vessel's risk score to accuse that vessel of forced labor.
+
+```{r ports-2018}
+#| fig-height: 5.2
+pc <- read_csv("data/ports_2018.csv", show_col_types = FALSE)
+top5 <- sum(head(pc$high_risk_visits, 5)) / sum(pc$high_risk_visits)
+p15 <- head(pc, 15) |> mutate(country = factor(country, levels = rev(country)))
+plot_ly(p15, x = ~high_risk_visits, y = ~country, type = "bar", orientation = "h",
+        marker = list(color = "#2c7fb8"),
+        hovertemplate = "%{y}: %{x:,} high-risk port visits<extra></extra>") |>
+  layout(title = list(text = sprintf("<b>Five countries and territories received %s of high-risk port visits</b><br><sup>Port visits by vessels the model rated high risk, 2018, top 15</sup>", pct(top5)), x = 0.02),
+         xaxis = list(title = "High-risk port visits", tickformat = ","), yaxis = list(title = ""),
+         font = font, margin = list(t = 70, l = 10)) |>
+  tidy()
+```
+
+<small>Data: McDonald et al. (2021), *PNAS*, published port-visit table. Visits with unknown port country excluded.</small>
+
+The map below applies the model specifically to fleets. Each 2024 port visit counts with the share of its fleet that the model rated high risk, and the default view shows only foreign-flagged vessels, because those are the ones a port state's inspectors can act on. In 2024, five ports received 42% of these risk-weighted visits, led by Port Louis in Mauritius.
+
+::: {#port-explorer}
+:::
+
+```{=html}
+<iframe src="port_explorer.html" title="Port explorer: port visits by squid jiggers and longliners, weighted by fleet forced-labor risk"
+        style="width:100%; height:760px; border:1px solid #c9d4da; border-radius:4px;" loading="lazy"></iframe>
+<p><small><a href="port_explorer.html" target="_blank" rel="noopener">Open the port explorer in a full window</a></small></p>
+```
+
+2. Inside a flagged fleet, I would recommend inspecting at random. Ranking vessels by risk score finds cases no faster than chance, as the inspector chart shows. Random selection within high-risk fleets finds cases just as fast, is harder for operators to predict, and treats every vessel in the fleet the same way.
+
+3. Treat identity changes as a warning sign Several case vessels changed names, flags, or transponder numbers, and six moved to the same new flag within weeks. A model that scores transponder IDs loses a vessel every time it does this. Requiring permanent IMO numbers and flagging sudden mass reflagging would make both human and satellite monitoring harder to escape.
+
+## Limits
+
+Sixteen cases in 2018 and 28 in later years are enough to show the pattern above, but not enough to rule out a modest vessel-level signal. The confidence intervals are wide.
+
+The cases are not a random sample. Most come from one investigation of one country's squid fleet, so other fleets could look different. Six of the new cases, the vessels that moved to the Kenyan flag, are purse seiners, which the model doesn't cover, so they aren't in either test.
+
+The comparison vessels are unlabeled, not confirmed clean. Some of them probably also use forced labor, which pulls the measured AUC down. The true within-fleet performance is likely somewhat higher than what I measured, though I have no way to know by how much.
+
+My model is a close rebuild of the original, not the original itself. For the later years, the inputs are rebuilt from public data and match the authors' closely but not exactly. And because the comparison vessels all come from the 2018 fleet, the later test can't compare the newest case vessels with other new vessels.
+
+## The bottom line
+
+Satellite detection of forced labor was pitched as a way to find the boats. I don't think the data shows it does that, but it tells us which fleets to watch and which ports they use. The most effective use of this is a map for where inspectors should go, paired with random inspections.
+
+If fleet-level targeting is where the value is, the natural next question is whether the authorities that act on fleets are targeting the right ones. U.S. Customs has already issued one order against an entire fishing fleet. In the next post, I'll look at whether its enforcement follows the goods most at risk of forced labor.
+
+---
+
+**Methods and code:** <https://github.com/aadhavr/fleets-not-boats>
+
+The code downloads the authors' original data and applies all changes locally; it doesn't redistribute modified versions of their files. Data sources: McDonald et al. (2021), *PNAS*; Global Fishing Watch; U.S. Customs and Border Protection; the Outlaw Ocean Project.
+
+[^1]: McDonald, G. G., et al. (2021). "Satellites can reveal global extent of forced labor in the world's fishing fleet." *PNAS* 118(3). <https://www.pnas.org/doi/10.1073/pnas.2016238117>
+[^2]: Swartz, W., et al. (2021). Reply in *PNAS* 118(19), e2100341118. <https://www.pnas.org/doi/10.1073/pnas.2100341118>
+[^3]: McDonald, G. G., et al. (2021). "Reply to Swartz et al." *PNAS* 118(19), e2104563118. <https://www.pnas.org/doi/10.1073/pnas.2104563118>
+[^4]: Global Fishing Watch. <https://globalfishingwatch.org>
+[^5]: U.S. Customs and Border Protection, Withhold Release Orders and Findings. <https://www.cbp.gov/trade/programs-administration/forced-labor/withhold-release-orders-and-findings>; fleet-wide order against Dalian Ocean Fishing: <https://www.cbp.gov/newsroom/national-media-release/cbp-issues-withhold-release-order-chinese-fishing-fleet>
+[^6]: The Outlaw Ocean Project, Bait-to-Plate vessel database. <https://b2p.theoutlawocean.com/vessels>
+[^7]: Authors' code and data. <https://github.com/emlab-ucsb/slavery-in-fisheries>
