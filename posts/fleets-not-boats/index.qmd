@@ -10,7 +10,7 @@ execute:
   message: false
 code-links:
   - text: Code and data
-    href: https://github.com/aadhavr/fleets-not-boatss
+    href: https://github.com/aadhavr/fleets-not-boats
     icon: github
 resources:
   - port_explorer.html
@@ -220,7 +220,7 @@ The map below applies the model specifically to fleets. Each 2024 port visit cou
 
 2. Inside a flagged fleet, I would recommend inspecting at random. Ranking vessels by risk score finds cases no faster than chance, as the inspector chart shows. Random selection within high-risk fleets finds cases just as fast, is harder for operators to predict, and treats every vessel in the fleet the same way.
 
-3. Treat identity changes as a warning sign Several case vessels changed names, flags, or transponder numbers, and six moved to the same new flag within weeks. A model that scores transponder IDs loses a vessel every time it does this. Requiring permanent IMO numbers and flagging sudden mass reflagging would make both human and satellite monitoring harder to escape.
+3. Treat identity changes as a warning sign. Several case vessels changed names, flags, or transponder numbers, and six moved to the same new flag within weeks. A model that scores transponder IDs loses a vessel every time it does this. Requiring permanent IMO numbers and flagging sudden mass reflagging would make both human and satellite monitoring harder to escape.
 
 ## Limits
 
