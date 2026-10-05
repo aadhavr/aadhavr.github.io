@@ -1,0 +1,189 @@
+---
+title: "The bond market trusts an unbuilt data center more than the neocloud that rents it."
+subtitle: "More than 16,000 FINRA trades in six bonds show how far lenders separated a neocloud's buildings from the neocloud itself, with deal terms checked against SEC filings."
+author: "Aadhav Rajesh"
+date: "2026-10-05"
+categories: [AI, finance, bonds]
+tbl-cap-location: bottom
+fig-cap-location: bottom
+resources:
+  - "fig1_weekly_spreads.html"
+  - "fig2_echo.html"
+  - "fig3_twin_bonds.html"
+  - "fig4_per_mw.html"
+---
+
+The AI boom runs on data centers, and most of them are built with borrowed money. A company like CoreWeave, which rents out the computer chips that AI labs use, usually doesn't own the buildings its chips sit in. It rents them from landlords like Applied Digital. The landlord borrows money to build the data center, and pays that loan back with the rent CoreWeave pays. CoreWeave borrows money too, to buy the chips.
+
+So if CoreWeave got into trouble, who would lose? Only the people who lent to CoreWeave? Or also the people who lent to its landlord, whose rent comes from CoreWeave? Lenders reveal what they believe is the answer through the interest they charge. The riskier a loan looks, the more interest they demand.
+
+On June 9, 2026, Applied Digital sold \$1.59 billion of bonds to build a data center for CoreWeave.[^apld-june] The building didn't exist yet; Applied Digital's own annual report described it as "in the design phase."[^apld-10k] Two days later, CoreWeave sold its own bonds.[^crwv-june] The building that didn't exist borrowed 264 basis points (about 2.6 percentage points) cheaper than the company that would pay its rent.
+
+Seven months earlier, the same landlord, financing buildings for the same tenant, had borrowed at about the same price as CoreWeave itself, and nearly three percentage points more than a comparable building with Google behind the rent.[^nov-issues]
+
+In between, the bond market changed its mind about something important: does a data center leased to a neocloud carry the neocloud's risk? In November 2025, it did; by the summer of 2026, it clearly didn't. When CoreWeave's own bonds sold off hard in July, its landlord's bonds barely noticed.
+
+In my [last post](https://www.aadhavrajesh.com/posts/ai-datacenter-leases/index.html), I ended by asking who carries the risk of the AI buildout. This post is my answer, told through how lenders decided. In this post, I'll show you when it happened, why the obvious explanation for it is wrong, and why I think the market has priced the risk it can see while ignoring the one that matters most.
+
+Once lenders decided a CoreWeave building was safe even if CoreWeave wasn't, financing that building got cheaper by more than 3.6 percentage points a year, about \$339,000 per megawatt. That's a powerful incentive to build more data centers, and to finance them through landlords rather than through the neoclouds that will fill them. But the confidence behind that discount rests on one assumption: that if a tenant fails, someone else will want the space. The more buildings this cheap money creates, the more spare capacity there would be in a downturn, and the weaker that assumption becomes. In other words, the market's belief that these buildings are safe is making the scenario that would prove it wrong more likely. Let's dive into it.
+
+## But first, bonds and neoclouds
+
+CoreWeave is a neocloud: it rents out GPU computing to AI labs and big tech. It mostly doesn't own its buildings. It leases them from landlords like Applied Digital, often former bitcoin miners with the grid connections that AI data centers now need.[^miners] The landlords borrow to build, CoreWeave borrows to fill the buildings with GPUs, and both sell bonds.
+
+A bond is a loan that trades. A bond's spread is the yield on the bond minus the yield on a U.S. Treasury of the same maturity, in basis points (100 bp = one percentage point). Treasuries are as close to risk-free as it gets, so the spread is the price investors charge for the risk that this borrower doesn't pay them back. A stock price can reflect hype or growth or any other number of factors. A bond can only pay you back or not, so its spread is the cleanest public read on how worried the people whose money is on the line are.
+
+So with that context, the bond market gives us a natural experiment to run. Applied Digital's bonds are secured by buildings and the rent CoreWeave pays on them. CoreWeave's own bonds are secured by nothing in particular. If the market thinks the building's fate is CoreWeave's fate, the two should move together.
+
+## November 2025: CoreWeave
+
+Eight days apart in November 2025, two landlords sold almost identical bonds: five-year notes, secured by a data center and its rent, repaid in installments starting around when the buildings are finished. The difference was the tenant.
+
+| When | Debt on | Spread | Compared with | Spread | Gap |
+|------|---------|--------|---------------|--------|-----|
+| Nov 2025 | CoreWeave-leased building (Applied Digital 9.25%) | ≥ 630 bp | Building with Google-backed rent (Cipher 7.125%) | 336 bp | ≥ +294 bp |
+| Jun 2026 | Unbuilt CoreWeave-leased building (Applied Digital 7.00%) | 274 bp | CoreWeave itself (CoreWeave 9.625%) | 538 bp | −264 bp |
+
+: Spread over Treasuries at issue, for bonds priced eight days apart (November) and two days apart (June). Same-week pairs remove whatever the whole market did in between. The November Applied Digital figure is a lower bound because of its repayment schedule. Source: SEC filings, U.S. Treasury. {#tbl-pairs tbl-colwidths="[11,28,10,28,10,13]"}
+
+Put simply: in November, lenders charged a lot more to fund a building rented by CoreWeave than a building whose rent Google would backstop. The difference was almost 3 percentage points of interest, every year. And once the CoreWeave building's bonds started trading, investors priced them almost exactly like a loan to CoreWeave itself. In their eyes, the building was only as safe as its tenant: if CoreWeave stopped paying rent, the building's lenders would be in just as much trouble as CoreWeave's own.
+
+To be honest, this makes sense. A tenant in bankruptcy can reject leases it no longer wants,[^365] and a neocloud with idle capacity might want to walk away from exactly these buildings. Whether a landlord's lenders are protected from the tenant was an active question the market was trying to answer.
+
+Now pay attention to the June row of @tbl-pairs. The rest of this post is about how the market got from one row to the other.
+
+## Observing the market change its mind
+
+New bonds are sold months apart, so they can't show you a change of mind as it happens. However, their trades can, and FINRA publishes every trade in these bonds.[^finra] So, I rebuilt the weekly spread of the Applied Digital building bonds and CoreWeave's own 2030 bonds, both paying 9.25%, from November 2025 to October 2026.
+
+::: {#fig-weekly-spreads}
+
+```{=html}
+<iframe src="fig1_weekly_spreads.html" title="Weekly spread over Treasuries" width="100%" height="560" style="border:0;" loading="lazy"></iframe>
+```
+
+Weekly spread over Treasuries of the CoreWeave-leased building (blue), CoreWeave itself (red), and the average U.S. junk bond (grey). Hover for values; click "range over repayment schedules" in the legend to show it. Source: FINRA, U.S. Treasury, ICE BofA US High Yield Index via FRED.
+
+:::
+
+The two lines start together and then pull apart. By early December, lenders were already charging the building less than CoreWeave. By late September, the building was paying at least 3.6 percentage points less interest per year than CoreWeave was.
+
+But a growing gap alone doesn't prove much. Maybe the building is just a better asset, and the market noticed slowly. The real question is whether the building's lenders stopped caring about CoreWeave's news. So I measured an echo. When CoreWeave has a bad week and its borrowing cost jumps by 1 percentage point, how much does the building's borrowing cost jump that same week? (I first strip out anything the whole market did that week, so only CoreWeave news counts.)
+
+::: {#fig-echo}
+
+```{=html}
+<iframe src="fig2_echo.html" title="How much each bond echoes CoreWeave" width="100%" height="430" style="border:0;" loading="lazy"></iframe>
+```
+
+How much of CoreWeave's weekly spread change each bond echoes. Bars are estimates; lines are 95% intervals. Source: FINRA, U.S. Treasury, ICE BofA via FRED.
+
+:::
+
+Here's what I found. Before early 2026, when CoreWeave's borrowing cost jumped by 1 point, the building's jumped by about half a point. After early 2026, it jumped by only a tenth of a point. Most of the link was gone, and the drop is far too big to be chance.
+
+Two comparisons can help with understanding how big that is. CoreWeave's own 2032 bonds move about two thirds of a point with its 2030 bonds, which makes sense: they are two loans to the same company. TeraWulf's bonds, on a building with a different tenant and Google behind the rent,[^wulf] move less than a tenth of a point with CoreWeave, which also makes sense: CoreWeave has nothing to do with them.
+
+After March 2026, the CoreWeave building behaves like TeraWulf's. The market went from treating CoreWeave's building as CoreWeave to treating it as if it belonged to someone else.
+
+## July: the test nobody designed
+
+If you wanted to test whether lenders had really separated CoreWeave from its buildings, you would want a shock that hit CoreWeave and only CoreWeave. Luckily for our analysis, in July 2026, CoreWeave got one.
+
+In the last days of June, reports that Meta would rent out its spare AI computing put a giant new competitor in CoreWeave's market.[^meta] Insider sales and questions about CoreWeave's debt followed, and the stock fell more than 11% on July 24.[^jul24] By the end of the month, Bloomberg was reporting that the swings were raising CoreWeave's cost of borrowing.[^bloomberg]
+
+From the week of June 22 to the week of July 27, CoreWeave's spread went from about 466 basis points to 734. Over the same five weeks, the spread on its landlord's bonds went from about 291 to 326.
+
+::: {#fig-twin-bonds}
+
+```{=html}
+<iframe src="fig3_twin_bonds.html" title="Same coupon, different risk" width="100%" height="300" style="border:0;" loading="lazy"></iframe>
+```
+
+Same coupon, same maturity year, same tenant at the bottom. Spread over Treasuries in the last week of September 2026. Source: FINRA, U.S. Treasury.
+
+:::
+
+The news that broke in July was about CoreWeave's competition, CoreWeave's insiders, CoreWeave's balance sheet, all of which is factored into the risk a lender to CoreWeave is paid to carry. So, CoreWeave's lenders reacted, demanding almost 2.7 percentage points more interest. The lenders to the building CoreWeave rents demanded only about a third of a point more. Same bad news, yet very different reactions.
+
+## It wasn't the restructuring
+
+There is an obvious explanation, and I believed it for about a week. On March 30, 2026, CoreWeave reshuffled its paperwork (aka they restructured). The leases behind Applied Digital's 9.25% bonds were moved into a separate CoreWeave company, CoreWeave Compute Acquisition Co. VIII.[^leasemove] The same day, that company signed an \$8.5 billion loan that the rating agencies called investment grade, which means it is very likely to be repaid. CoreWeave announced it the next day.[^ddtl4] So maybe the building's lenders simply felt safer because their rent now came through a safer-looking part of CoreWeave?
+
+I don't think so, for two reasons.
+
+First, the bonds didn't react when it happened. Around March 30, the building's bonds did gain a little ground on CoreWeave's, but moves that size showed up on more than a quarter of all the other days in my data. The change we have observed was a slow drift over several months.
+
+Second, and more convincing: not every lease was moved. Applied Digital's fourth building, the unbuilt one from the opening, is still rented by CoreWeave itself, with no separate company and no safe-rated loan behind it.[^b4] If the restructuring explained everything, that building's bonds should still follow CoreWeave closely. Yet, when CoreWeave's borrowing cost jumps by 1 point, Building 4's jumps by about a fifth of a point, against about an eighth for the moved leases over the same weeks. The difference is small enough to be chance.
+
+So lenders weren't trusting a clever legal restructuring, but rather the building itself. It isn't news that a loan backed by a building is safer than a plain loan to a company. What's surprising is how completely the building's lenders stopped caring about the tenant. I think two things explain it. First, a company in trouble keeps paying for what its business can't run without, and aims to trim other costs first. CoreWeave can't run without its data centers, so this rent is close to the last bill it would miss. Second, buildings with big power connections are scarce right now. Even if CoreWeave walked away, someone else would probably want the building. Over the first half of 2026, lenders seem to have decided that CoreWeave's buildings would outlast CoreWeave's problems.
+
+## What the change is worth
+
+Applied Digital borrowed \$2.35 billion against 250 MW of CoreWeave leases, about \$9.4 million of debt per megawatt.[^debt] At the end of September, the building borrowed at least 3.61 percentage points cheaper than CoreWeave. That's about \$339,000 of interest per megawatt, every year, or roughly 18% of the median annual rent from my last post, just from who does the borrowing.
+
+::: {#fig-per-mw}
+
+```{=html}
+<iframe src="fig4_per_mw.html" title="What the gap is worth" width="100%" height="400" style="border:0;" loading="lazy"></iframe>
+```
+
+Interest saved per megawatt per year by borrowing as the building rather than as CoreWeave: debt per megawatt (\$2.35 billion ÷ 250 MW) times the conservative end of the spread gap, week by week. Below zero, the building paid more. Source: SEC filings, FINRA, U.S. Treasury.
+
+:::
+
+If you model a neocloud's costs, whether its capacity is financed against the building or against the company is not a footnote. It's one of the larger numbers in the model, and as of this summer the market prices it as two different businesses.
+
+## The test that hasn't happened yet
+
+Everything in this post shows that the buildings' lenders believe they are protected. The bad news from July about CoreWeave led to a sharp sell-off in CoreWeave's bonds, and a shrug from the landlord's. The protection rests on one assumption: if CoreWeave walks away, someone else will want the power.
+
+That assumption holds when one neocloud stumbles in a market where everyone else is still desperate for capacity. It fails in exactly the scenario people actually worry about, where demand for AI compute itself falls. Then CoreWeave and its landlord go down together, because a purpose-built GPU data center is hard to re-lease when everyone has spare capacity at once. And notice what July's bad news actually was: Meta, one of the largest buyers of AI compute in the world, offering its *spare* capacity to outsiders.
+
+There's a hint in the data that the market half-knows this. Applied Digital also has bonds on a building leased to an investment-grade hyperscaler.[^hyperscaler] Their tenant is about as safe as tenants get, so their echo of CoreWeave should be among the lowest in the sample. It's about three tenths of a point, higher than the CoreWeave buildings. The best explanation I have is that CoreWeave's spread carries a general AI-infrastructure mood, and some building debt is quietly exposed to that mood regardless of who the tenant is.
+
+Lenders no longer think CoreWeave's buildings are as risky as CoreWeave, but that doesn't make the buildings safe. A loan against a CoreWeave building is still a bet that demand for AI stays strong (strong enough that if CoreWeave fails, another company steps in and pays the rent). In July, this idea was somewhat tested when CoreWeave faced some trouble on its own, and the market's trust in the buildings persisted. Nothing has tested the demand for AI computing falling across the whole industry at once. That's the risk that would actually pop the AI buildout bubble, and it simply hasn't happened yet. Markets price risk from what they have seen and nobody has seen the AI bubble pop, so it isn't in the prices.
+
+Think back to the two bonds from the start: same interest rate, same maturity year, same company ultimately paying for both. Today the market treats them like loans to two different companies, one risky and one fairly safe. Perhaps the market is right. But the only test it has passed is the underlying tenant, CoreWeave, stumbling on its own. The test that matters, the whole AI market stumbling together, hasn't come yet.
+
+## Appendix: data and method
+
+New issues: Nine fixed-rate notes from CoreWeave, Applied Digital, Cipher and TeraWulf, issued May 2025 to June 2026, with coupon, issue price, pricing date and maturity from SEC filings or company press releases. As in the lease post, every value carries the exact sentence from its source; a script downloads each source, confirms the sentence is there and the number is in the sentence, and stores a SHA-256 hash of each file. All 52 values pass. Convertible and euro-denominated notes are excluded. Yields are computed from dated cash flows; spreads subtract the U.S. Treasury par yield interpolated to each bond's life on its pricing date.
+
+Trades: FINRA trade history from each bond's public page, November 13, 2025 to October 2, 2026. Each file's record count is checked against FINRA's total and its symbol against the bond. Daily prices are volume-weighted, converted to spreads over interpolated Treasuries, and averaged by week.
+
+| Bond | What stands behind it | Trades | Trading from |
+|------|-----------------------|--------|--------------|
+| Applied Digital 9.25% 2030 | CoreWeave leases (moved to a subsidiary, Mar 2026) | 6,023 | Nov 2025 |
+| CoreWeave 9.25% 2030 | CoreWeave, unsecured | 6,162 | before Nov 2025 |
+| Applied Digital 7.00% 2031 (Building 4) | CoreWeave lease, not moved | 1,737 | Jun 2026 |
+| CoreWeave 9.625% 2032 | CoreWeave, unsecured | 2,132 | Jun 2026 |
+| Applied Digital 6.75% 2031 | Investment-grade hyperscaler lease | [n] | Mar 2026 |
+| TeraWulf 7.75% 2030 | Fluidstack lease, Google backstop | [n] | before Nov 2025 |
+
+: The six bonds in the trade data, November 13, 2025 to October 2, 2026. Source: FINRA TRACE. {#tbl-bonds tbl-colwidths="[30,42,12,16]"}
+
+Repayment schedule: The Applied Digital 9.25% notes amortize from December 2027 on a schedule set in the indenture. I compute spreads under two cases, all principal at maturity and all at the first installment, which bracket any real schedule, and report the conservative end.
+
+Echo: Weekly changes in each bond's spread are regressed on weekly changes in CoreWeave's 2030 spread and in the ICE BofA US High Yield index, with Newey-West standard errors (2, 4 and 8 lags). The before/after estimate interacts every term with a post-March-30 dummy: the echo falls from 0.47 (s.e. 0.02) to 0.10 (s.e. 0.08), a change of −0.37 (s.e. 0.08, z ≈ −4.7), robust to lag length, to dropping thin weeks, and to the alternative repayment case (0.99 to 0.23). Comparisons between bonds regress the difference of their weekly changes directly, so the standard error is for the difference. Building 4 minus the moved leases: +0.05 (s.e. 0.06). TeraWulf minus the moved leases, after March 30: −0.04 (s.e. 0.05). Hyperscaler building minus the moved leases: +0.18 (s.e. 0.05).
+
+Placebo: The same ten-day difference-in-differences around every date more than 20 days from March 30, 2026 (183 dates; s = 35.6 bp). The March 30 value, −39 bp, is matched or beaten on 27% of them. A scan over break dates finds no single week that clearly fits best.
+
+Code and data: [github.com/aadhavr/guarantee-prices](https://github.com/aadhavr/guarantee-prices). Raw FINRA files are not redistributed under FINRA's terms; the CUSIPs, date ranges and file hashes are, so anyone can rebuild them.
+
+[^apld-june]: Applied Digital, press release, June 9, 2026. <https://ir.applieddigital.com/news-events/press-releases/detail/156>
+[^apld-10k]: Applied Digital, Form 10-K for the fiscal year ended May 31, 2026. <https://www.sec.gov/Archives/edgar/data/0001144879/000114487926000048/apld-20260531.htm>
+[^crwv-june]: CoreWeave, press release, June 11, 2026. <https://investors.coreweave.com/news/news-details/2026/CoreWeave-Announces-Pricing-of-1-25-Billion-of-Senior-Notes-and-2-Billion-of-Senior-Notes/default.aspx>
+[^nov-issues]: Applied Digital, Form 8-K, November 13, 2025 (<https://www.sec.gov/Archives/edgar/data/1144879/000149315225022506/form8-k.htm>); Cipher Mining, Form 8-K, November 2025 (<https://www.sec.gov/Archives/edgar/data/1819989/000095010325014692/dp237330_8k.htm>); FINRA TRACE trade history.
+[^miners]: Applied Digital previously operated as Applied Blockchain. Bisnow, June 2025. <https://www.bisnow.com/news/national/data-center/coreweave-to-lease-250mw-at-applied-digitals-north-dakota-data-center-campus-129617>
+[^365]: U.S. Bankruptcy Code, 11 U.S.C. § 365.
+[^finra]: FINRA TRACE bond trade history, CUSIPs 00202DAA5 (Applied Digital 9.25% 2030) and 21873SAB4 (CoreWeave 9.25% 2030).
+[^wulf]: TeraWulf, press release, October 16, 2025. <https://www.globenewswire.com/news-release/2025/10/16/3168310/0/en/TeraWulf-Inc-Announces-Pricing-of-3-2-Billion-of-Senior-Secured-Notes.html>
+[^meta]: The Motley Fool, July 5, 2026. <https://www.fool.com/investing/2026/07/05/why-coreweave-stock-plummeted-this-week/>
+[^jul24]: KoalaGains, July 24, 2026. <https://koalagains.com/daily-top-movers/top-losers/details/6d3c2c65-ef3f-40be-b4fe-2a88e0f1721d>
+[^bloomberg]: Bloomberg, July 30, 2026. <https://www.bloomberg.com/news/articles/2026-07-30/coreweave-s-wild-stock-ride-takes-toll-on-its-cost-to-finance-ai>
+[^leasemove]: Applied Digital, Form 10-K (see note 2).
+[^ddtl4]: CoreWeave, Form 8-K, March 30, 2026, with press release dated March 31, 2026. <https://www.sec.gov/Archives/edgar/data/1769628/000176962826000129/crwv-20260330.htm>
+[^b4]: Applied Digital, Form 10-K (see note 2): the Building 4 lease is between APLD ELN-02 C LLC and CoreWeave, Inc.
+[^debt]: \$2.35 billion: Applied Digital, Form 8-K, November 13, 2025 (see note 4). 250 MW: Applied Digital, Form 10-K (see note 2).
+[^hyperscaler]: Applied Digital, Form 10-K (see note 2).
