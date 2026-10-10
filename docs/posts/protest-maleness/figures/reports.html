@@ -1,0 +1,142 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How exam protests get reported</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script><style>
+*{box-sizing:border-box}
+body{font-family:"IBM Plex Sans",Helvetica,Arial,sans-serif;margin:0;color:#1d1d2b;background:#fbfaf7}
+.wrap{max-width:1040px;margin:0 auto;padding:18px}
+h2{font-size:22px;margin:34px 0 4px} .kicker{color:#6b7280;margin:0 0 10px;font-size:14px;line-height:1.45}
+.note{font-size:12px;color:#6b7280;margin:6px 0 0;line-height:1.4}
+.card{background:#fff;border:1px solid #e7e5e0;border-radius:10px;padding:14px 14px 10px;margin-bottom:26px}
+select{font:inherit;padding:4px 8px;border-radius:6px;border:1px solid #ccc;background:#fff}
+.grid{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+.tile{border-radius:7px;padding:4px 5px 0;cursor:pointer;border:1px solid #e7e5e0;min-height:74px;position:relative}
+.tile:hover{outline:2px solid #1d1d2b}
+.tile .nm{font-size:11px;font-weight:600;line-height:1.1}
+.tile .val{font-size:10px;color:#6b7280}
+.tgrid{grid-template-columns:repeat(10,1fr);max-width:820px;margin:0 auto}.tgrid .tile{aspect-ratio:1;min-height:0;background:#fff;padding:5px;display:flex;flex-direction:column;justify-content:space-between}
+.tgrid .tile.hot{background:#fbe3d9;border-color:#e9b8a6}.tgrid .tile.sel{outline:2px solid #1d1d2b}
+.tile .lk{font-weight:400;font-size:9px;color:#9a3f2c}
+@media(max-width:600px){.tgrid{gap:3px}.tgrid .tile{padding:2px}.tile .lk{display:none}}
+.legend{display:flex;gap:12px;font-size:12px;color:#6b7280;margin:6px 0}
+
+.ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.btn{font:inherit;padding:5px 12px;border-radius:6px;border:1px solid #1d1d2b;background:#1d1d2b;color:#fff;cursor:pointer}
+.big{font-size:15px;color:#1d1d2b}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:820px){.mgrid{grid-template-columns:repeat(2,1fr)}}
+.mcell{border:1px solid #eee9e0;border-radius:8px;padding:6px 6px 0}
+.msvg{display:block;width:100%;height:auto;margin:4px 0 6px}
+.mleg{display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280;margin:0 0 10px;flex-wrap:wrap}
+.mbar{display:inline-block;width:120px;height:10px;border-radius:3px;background:linear-gradient(90deg,#f1efea,#f4d6a6 15%,#f4a259 50%,#c8553d)}
+.rs-tip{position:absolute;display:none;pointer-events:none;background:#1d1d2b;color:#fff;font-size:12px;padding:5px 8px;border-radius:6px;white-space:nowrap}
+.u-grid{display:flex;flex-direction:column;gap:14px}
+.u-row{display:grid;grid-template-columns:165px 1fr 92px;gap:12px;align-items:center}
+.u-row.rep{border-top:1px dashed #d9d4ca;padding-top:14px}
+.u-lab{font-size:14px;font-weight:600;line-height:1.25}.u-lab span{display:block;font-weight:400;font-size:11px;color:#6b7280;margin-top:2px}
+.u-icons{display:grid;grid-template-columns:repeat(25,1fr);gap:2px 3px}
+.u-ic svg{display:block;width:100%;height:auto;fill:#d9d4ca}.u-ic.on svg{fill:#8a3fd1}
+.u-row.rep .u-ic svg,.u-row.rep2 .u-ic svg{fill:#e4e0d8}.u-row.rep2 .u-ic.on svg{fill:#8a3fd1}.u-row.rep .u-ic.on svg{fill:#8a3fd1}
+.u-val{line-height:1.25}.u-val b{font-size:22px;color:#8a3fd1;display:block;line-height:1.1;margin-bottom:3px}.u-val span{display:block;font-size:11.5px;line-height:1.3;color:#6b7280}
+@media(max-width:520px){.u-row{grid-template-columns:1fr}}
+.rb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px}
+@media(max-width:900px){.rb-grid{grid-template-columns:1fr}}
+.rb-t{font-weight:600;font-size:14px;margin-bottom:2px}.rb-s{font-size:11px;color:#6b7280;margin-bottom:4px}
+.rb-row{display:grid;grid-template-columns:100px 1fr 118px;gap:10px;align-items:center;margin:7px 0;font-size:13px}
+.rb-track{position:relative;height:14px;background:#f3f1ec;border-radius:3px}
+.rb-bar{position:absolute;left:0;top:0;bottom:0;background:#b9b4aa;border-radius:3px}.rb-bar.hi{background:#3d3d4f}
+.rb-ci{position:absolute;top:6px;height:2px;background:#1d1d2b;opacity:.55}
+.rb-v{font-variant-numeric:tabular-nums;font-weight:600;line-height:1.2}.rb-v small{display:block;font-weight:400;font-size:10.5px;color:#6b7280;margin-top:1px}
+.db-ci{position:absolute;top:7px;height:2px;opacity:.45}
+.rb-track.dumb{background:transparent;border-bottom:1px solid #e7e5e0;height:16px}
+.db-line{position:absolute;top:7px;height:2px;background:#cfc9bf}
+.db-dot{position:absolute;top:2px;width:12px;height:12px;margin-left:-6px;border-radius:50%;border:2px solid #fff}
+.part{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a3fd1;margin:40px 0 -8px}
+.at-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;align-items:start}
+@media(max-width:820px){.at-wrap{grid-template-columns:1fr}}
+.at-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.at-map svg{display:block;width:100%;height:auto;max-height:560px}.at-map path{cursor:pointer;transition:fill .3s}.at-map path:hover{opacity:.75}
+.mout{display:inline-block;width:14px;height:10px;border:2px solid #1d1d2b;border-radius:2px;margin-left:10px}
+.mt{font-weight:600;font-size:13px}.ms{font-size:11px;color:#6b7280}
+.yt{color:#0f0f0f}
+.yt-head{display:flex;gap:24px;align-items:center;font-size:16px;margin-bottom:8px}.yt-sort{font-size:14px;color:#606060}
+.yt-chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px}
+.yt-chip{font-size:13px;font-family:inherit;border:0;border-radius:8px;padding:6px 11px;background:#f2f2f2;color:#0f0f0f;cursor:pointer}
+.yt-chip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}.yt-chip span{color:#606060;margin-left:4px}
+.yt-chip.on{background:#0f0f0f;color:#fff}.yt-chip.on span{color:#ddd}
+.yt-note{font-size:13px;color:#3c3c3c;min-height:18px;margin-bottom:8px}
+.yt-list{height:460px;overflow-y:auto;border-top:1px solid #eee;padding-right:6px}
+.yt-c{display:flex;gap:12px;padding:10px 0;transition:opacity .25s}.yt-c.dim{opacity:.12}
+.yt-av{width:36px;height:36px;border-radius:50%;flex:none}
+.yt-body{flex:1;min-width:0}.yt-meta{display:flex;gap:8px;align-items:center;font-size:12px;color:#606060;margin-bottom:6px}
+.yt-name{display:inline-block;width:84px;height:9px;border-radius:5px;background:#d9d9d9}
+.yt-tag{border:1px solid;border-radius:10px;padding:0 7px;font-size:11px}
+.yt-line{height:9px;border-radius:5px;background:#e9e9e9;margin:5px 0}
+.yt-act{font-size:12px;color:#606060;margin-top:6px}
+
+.vp{max-width:820px}
+.vp-screen{position:relative;background:#0f0f0f;color:#fff;border-radius:12px 12px 0 0;aspect-ratio:16/7;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:box-shadow .3s}
+.vp-kicker{position:absolute;top:14px;left:18px;font-size:13px;color:#aaa}
+.vp-now{font-size:30px;font-weight:600;text-align:center;padding:0 20px}.vp-share{font-size:15px;color:#ccc;margin-top:6px}
+.vp-play{position:absolute;bottom:14px;left:16px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;color:#0f0f0f;font-size:16px;cursor:pointer}
+.vp-bar{position:relative;height:10px;background:#3a3a3a;cursor:pointer}
+.vp-seg{position:absolute;top:2px;height:6px;border-radius:2px;cursor:pointer}.vp-seg:hover{top:0;height:10px}
+.vp-head{position:absolute;top:-4px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#ff3d3d;box-shadow:0 0 0 2px #fff;pointer-events:none;z-index:2}
+.vp-ctrl{background:#0f0f0f;color:#ddd;font-size:13px;padding:8px 14px;border-radius:0 0 12px 12px;display:flex;gap:8px}
+.vp-title{font-size:17px;font-weight:600;margin:14px 0 8px}
+.vp-list{display:flex;flex-direction:column;gap:2px}
+.vp-row{display:grid;grid-template-columns:14px 52px 1fr auto;gap:10px;align-items:center;text-align:left;border:0;background:transparent;padding:7px 8px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;color:#1d1d2b}
+.vp-row:hover,.vp-row.on{background:#f2f0eb}.vp-dot{width:12px;height:12px;border-radius:3px}.vp-ts{color:#1f6f8b;font-variant-numeric:tabular-nums}.vp-len{color:#6b7280;font-size:13px}
+
+.dk-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:4px}
+.dk-tabs{display:flex;gap:6px}.dk-tab{font-family:inherit;font-size:13px;border:1px solid #d9d6cf;background:#fff;border-radius:16px;padding:5px 12px;cursor:pointer}
+.dk-tab.on{background:#1d1d2b;color:#fff;border-color:#1d1d2b}.dk-stat{font-size:14px}
+
+.cb-legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.cb-chip{font-family:inherit;font-size:13px;border:1px solid #e2dfd8;background:#fff;border-radius:16px;padding:4px 10px;cursor:pointer;color:#1d1d2b}
+.cb-chip b{font-weight:600;margin-left:3px}.cb-chip.on{border-color:#1d1d2b;background:#f4f2ee}
+.cb-sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.cb-head{display:flex;gap:28px;align-items:center;font-size:17px;color:#0f0f0f;margin:4px 0 12px}
+.cb-head span{font-size:14px;color:#606060}
+.cb-grid{display:grid;grid-template-columns:repeat(16,1fr);gap:4px}
+@media(max-width:900px){.cb-grid{grid-template-columns:repeat(14,1fr)}}
+@media(max-width:600px){.cb-grid{grid-template-columns:repeat(8,1fr)}}
+.cb{display:flex;gap:5px;height:30px;padding:5px 5px 3px;border-radius:4px;background:var(--t);transition:opacity .2s;overflow:hidden}
+.cb .av{flex:none;width:13px;height:13px;border-radius:50%;background:var(--c)}
+.cb .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;padding-top:1px}
+.cb .tx b{display:block;height:4px;width:50%;border-radius:2px;background:#3f3f46;opacity:.7}
+.cb .tx b em{display:none}
+.cb .tx i{display:block;height:3px;width:85%;border-radius:2px;background:#bdb8ae}
+.cb .ft{display:flex;gap:3px;align-items:center;margin-top:1px}
+.cb .ft svg{width:5px;height:5px;fill:#a19d95}
+.cb.dim{opacity:.12}
+.cb-note{font-size:14px;margin-top:12px}
+.gq{font-family:inherit;color:#202124}
+.gq-bar{display:flex;align-items:center;gap:12px;border:1px solid #dfe1e5;border-radius:24px;padding:11px 18px;box-shadow:0 1px 6px rgba(32,33,36,.18);font-size:16px;max-width:640px}
+.gq-caret{color:#4285F4;animation:blink 1s step-end infinite}@keyframes blink{50%{opacity:0}}
+.gq-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.gq-chip{font-size:13px;font-family:inherit;border:1px solid #dadce0;border-radius:16px;padding:6px 12px;background:#fff;color:#3c4043;cursor:pointer}
+.gq-chip i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:7px}
+.gq-chip.on{border-color:var(--c);background:#f8f9fa;font-weight:500}
+.gq-card{border:1px solid #dadce0;border-radius:8px;padding:16px}
+.gq-row{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.gq-card{overflow:hidden}
+.gq-title{font-size:18px}.gq-sub{font-size:13px;color:#5f6368}
+.gq-num{text-align:right}.gq-num div:first-child{font-size:34px;font-weight:500}.gq-small{font-size:12px;color:#5f6368}
+.gq-meter{margin-top:14px}.gq-track{position:relative;height:14px;background:#f1f3f4;border-radius:7px;overflow:hidden}
+.gq-mde{position:absolute;top:0;bottom:0;background:#dadce0}.gq-val{position:absolute;top:3px;bottom:3px;border-radius:4px}
+.gq-legend{display:flex;gap:16px;font-size:12px;color:#5f6368;margin-top:6px}.sw{display:inline-block;width:12px;height:8px;border-radius:2px;margin-right:5px}
+.sw.val{background:#34A853}.sw.mde{background:#dadce0}
+body{background:#fff}.wrap{max-width:none;padding:2px 2px 6px}.card{border:0;padding:0;margin:0;border-radius:0}h2{margin-top:0}</style></head><body><div class="wrap"><div class="card" id="reports"><h2>How exam protests get reported</h2><div style="height:10px"></div><div id="rbGrid" class="rb-grid"></div>
+<script>
+(function(){
+const P=[{"t": "Report mentions a woman", "bars": [{"g": "Exam protests", "v": 0.0208163265306122, "lo": 0.0158679757810197, "hi": 0.027265044704084, "n": 2450}, {"g": "All protests", "v": 0.1100346820809248, "lo": 0.1079665267273304, "hi": 0.112137473833033, "n": 86500}]}, {"t": "Protesters described only as students, aspirants or youth", "bars": [{"g": "Exam protests", "v": 0.6, "lo": 0.58045903516045, "hi": 0.6192278557945324, "n": 2450}, {"g": "Other events", "v": 0.1183581201665675, "lo": 0.1161916450060137, "hi": 0.1205594804773455, "n": 84050}]}, {"t": "Police intervened or used force", "bars": [{"g": "Exam protests", "v": 0.1294567062818336, "lo": 0.1165017059527138, "hi": 0.1436181258190457, "n": 2356}, {"g": "Other protests", "v": 0.0515361744301288, "lo": 0.0499732735363398, "hi": 0.0531452202894191, "n": 74666}]}, {"t": "Student protest reports that mention a woman", "bars": [{"g": "India", "v": 0.1374491604964021, "lo": 0.1307023978700453, "hi": 0.1444863011698721, "n": 9589}, {"g": "Bangladesh", "v": 0.071301247771836, "lo": 0.0623530000266108, "hi": 0.0814221420105905, "n": 2805}, {"g": "Nepal", "v": 0.0421994884910485, "lo": 0.0302038336465949, "hi": 0.0586710744773831, "n": 782}]}], g=document.getElementById('rbGrid'); const pct=v=>(100*v).toFixed(v<0.1?1:0)+'%';
+P.forEach(p=>{const mx=Math.max(...p.bars.map(b=>b.hi))*1.1;
+  const d=document.createElement('div'); d.className='rb-panel';
+  d.innerHTML='<div class="rb-t">'+p.t+'</div>'+p.bars.map((b,i)=>'<div class="rb-row" title="'+pct(b.v)+' (95% CI '+pct(b.lo)+' to '+pct(b.hi)+'), n = '+b.n.toLocaleString()+'">'+
+    '<span class="rb-g">'+b.g+'</span><span class="rb-track"><span class="rb-bar'+(i===0?' hi':'')+'" style="width:'+(100*b.v/mx)+'%"></span>'+
+    '<span class="rb-ci" style="left:'+(100*b.lo/mx)+'%;width:'+(100*(b.hi-b.lo)/mx)+'%"></span></span><span class="rb-v">'+pct(b.v)+
+    '<small>95% CI '+(100*b.lo).toFixed(1)+' to '+(100*b.hi).toFixed(1)+'%<br>n = '+b.n.toLocaleString()+'</small></span></div>').join('');
+  g.appendChild(d);});
+})();
+</script><p class="note">Shares of ACLED events, India 2023-2026 unless named; thin line: 95% interval. Regional row: student events in each country's ACLED data, same window.</p></div></div><script>(function(){var last=0;
+function s(){var w=document.querySelector('.wrap');if(!w)return;var h=Math.ceil(w.getBoundingClientRect().height)+8;
+if(Math.abs(h-last)<3)return;last=h;parent.postMessage({wsFig:'reports',h:h},'*');}
+window.addEventListener('load',s);window.addEventListener('resize',s);
+if(window.ResizeObserver)new ResizeObserver(s).observe(document.querySelector('.wrap')||document.body);setTimeout(s,800);})();</script></body></html>

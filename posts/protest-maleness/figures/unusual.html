@@ -1,0 +1,130 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Could the result be luck?</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"><script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script><style>
+*{box-sizing:border-box}
+body{font-family:"IBM Plex Sans",Helvetica,Arial,sans-serif;margin:0;color:#1d1d2b;background:#fbfaf7}
+.wrap{max-width:1040px;margin:0 auto;padding:18px}
+h2{font-size:22px;margin:34px 0 4px} .kicker{color:#6b7280;margin:0 0 10px;font-size:14px;line-height:1.45}
+.note{font-size:12px;color:#6b7280;margin:6px 0 0;line-height:1.4}
+.card{background:#fff;border:1px solid #e7e5e0;border-radius:10px;padding:14px 14px 10px;margin-bottom:26px}
+select{font:inherit;padding:4px 8px;border-radius:6px;border:1px solid #ccc;background:#fff}
+.grid{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+.tile{border-radius:7px;padding:4px 5px 0;cursor:pointer;border:1px solid #e7e5e0;min-height:74px;position:relative}
+.tile:hover{outline:2px solid #1d1d2b}
+.tile .nm{font-size:11px;font-weight:600;line-height:1.1}
+.tile .val{font-size:10px;color:#6b7280}
+.tgrid{grid-template-columns:repeat(10,1fr);max-width:820px;margin:0 auto}.tgrid .tile{aspect-ratio:1;min-height:0;background:#fff;padding:5px;display:flex;flex-direction:column;justify-content:space-between}
+.tgrid .tile.hot{background:#fbe3d9;border-color:#e9b8a6}.tgrid .tile.sel{outline:2px solid #1d1d2b}
+.tile .lk{font-weight:400;font-size:9px;color:#9a3f2c}
+@media(max-width:600px){.tgrid{gap:3px}.tgrid .tile{padding:2px}.tile .lk{display:none}}
+.legend{display:flex;gap:12px;font-size:12px;color:#6b7280;margin:6px 0}
+
+.ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.btn{font:inherit;padding:5px 12px;border-radius:6px;border:1px solid #1d1d2b;background:#1d1d2b;color:#fff;cursor:pointer}
+.big{font-size:15px;color:#1d1d2b}
+.mgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:820px){.mgrid{grid-template-columns:repeat(2,1fr)}}
+.mcell{border:1px solid #eee9e0;border-radius:8px;padding:6px 6px 0}
+.msvg{display:block;width:100%;height:auto;margin:4px 0 6px}
+.mleg{display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280;margin:0 0 10px;flex-wrap:wrap}
+.mbar{display:inline-block;width:120px;height:10px;border-radius:3px;background:linear-gradient(90deg,#f1efea,#f4d6a6 15%,#f4a259 50%,#c8553d)}
+.rs-tip{position:absolute;display:none;pointer-events:none;background:#1d1d2b;color:#fff;font-size:12px;padding:5px 8px;border-radius:6px;white-space:nowrap}
+.u-grid{display:flex;flex-direction:column;gap:14px}
+.u-row{display:grid;grid-template-columns:165px 1fr 92px;gap:12px;align-items:center}
+.u-row.rep{border-top:1px dashed #d9d4ca;padding-top:14px}
+.u-lab{font-size:14px;font-weight:600;line-height:1.25}.u-lab span{display:block;font-weight:400;font-size:11px;color:#6b7280;margin-top:2px}
+.u-icons{display:grid;grid-template-columns:repeat(25,1fr);gap:2px 3px}
+.u-ic svg{display:block;width:100%;height:auto;fill:#d9d4ca}.u-ic.on svg{fill:#8a3fd1}
+.u-row.rep .u-ic svg,.u-row.rep2 .u-ic svg{fill:#e4e0d8}.u-row.rep2 .u-ic.on svg{fill:#8a3fd1}.u-row.rep .u-ic.on svg{fill:#8a3fd1}
+.u-val{line-height:1.25}.u-val b{font-size:22px;color:#8a3fd1;display:block;line-height:1.1;margin-bottom:3px}.u-val span{display:block;font-size:11.5px;line-height:1.3;color:#6b7280}
+@media(max-width:520px){.u-row{grid-template-columns:1fr}}
+.rb-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 28px}
+@media(max-width:900px){.rb-grid{grid-template-columns:1fr}}
+.rb-t{font-weight:600;font-size:14px;margin-bottom:2px}.rb-s{font-size:11px;color:#6b7280;margin-bottom:4px}
+.rb-row{display:grid;grid-template-columns:100px 1fr 118px;gap:10px;align-items:center;margin:7px 0;font-size:13px}
+.rb-track{position:relative;height:14px;background:#f3f1ec;border-radius:3px}
+.rb-bar{position:absolute;left:0;top:0;bottom:0;background:#b9b4aa;border-radius:3px}.rb-bar.hi{background:#3d3d4f}
+.rb-ci{position:absolute;top:6px;height:2px;background:#1d1d2b;opacity:.55}
+.rb-v{font-variant-numeric:tabular-nums;font-weight:600;line-height:1.2}.rb-v small{display:block;font-weight:400;font-size:10.5px;color:#6b7280;margin-top:1px}
+.db-ci{position:absolute;top:7px;height:2px;opacity:.45}
+.rb-track.dumb{background:transparent;border-bottom:1px solid #e7e5e0;height:16px}
+.db-line{position:absolute;top:7px;height:2px;background:#cfc9bf}
+.db-dot{position:absolute;top:2px;width:12px;height:12px;margin-left:-6px;border-radius:50%;border:2px solid #fff}
+.part{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a3fd1;margin:40px 0 -8px}
+.at-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;align-items:start}
+@media(max-width:820px){.at-wrap{grid-template-columns:1fr}}
+.at-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.at-map svg{display:block;width:100%;height:auto;max-height:560px}.at-map path{cursor:pointer;transition:fill .3s}.at-map path:hover{opacity:.75}
+.mout{display:inline-block;width:14px;height:10px;border:2px solid #1d1d2b;border-radius:2px;margin-left:10px}
+.mt{font-weight:600;font-size:13px}.ms{font-size:11px;color:#6b7280}
+.yt{color:#0f0f0f}
+.yt-head{display:flex;gap:24px;align-items:center;font-size:16px;margin-bottom:8px}.yt-sort{font-size:14px;color:#606060}
+.yt-chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 8px}
+.yt-chip{font-size:13px;font-family:inherit;border:0;border-radius:8px;padding:6px 11px;background:#f2f2f2;color:#0f0f0f;cursor:pointer}
+.yt-chip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}.yt-chip span{color:#606060;margin-left:4px}
+.yt-chip.on{background:#0f0f0f;color:#fff}.yt-chip.on span{color:#ddd}
+.yt-note{font-size:13px;color:#3c3c3c;min-height:18px;margin-bottom:8px}
+.yt-list{height:460px;overflow-y:auto;border-top:1px solid #eee;padding-right:6px}
+.yt-c{display:flex;gap:12px;padding:10px 0;transition:opacity .25s}.yt-c.dim{opacity:.12}
+.yt-av{width:36px;height:36px;border-radius:50%;flex:none}
+.yt-body{flex:1;min-width:0}.yt-meta{display:flex;gap:8px;align-items:center;font-size:12px;color:#606060;margin-bottom:6px}
+.yt-name{display:inline-block;width:84px;height:9px;border-radius:5px;background:#d9d9d9}
+.yt-tag{border:1px solid;border-radius:10px;padding:0 7px;font-size:11px}
+.yt-line{height:9px;border-radius:5px;background:#e9e9e9;margin:5px 0}
+.yt-act{font-size:12px;color:#606060;margin-top:6px}
+
+.vp{max-width:820px}
+.vp-screen{position:relative;background:#0f0f0f;color:#fff;border-radius:12px 12px 0 0;aspect-ratio:16/7;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:box-shadow .3s}
+.vp-kicker{position:absolute;top:14px;left:18px;font-size:13px;color:#aaa}
+.vp-now{font-size:30px;font-weight:600;text-align:center;padding:0 20px}.vp-share{font-size:15px;color:#ccc;margin-top:6px}
+.vp-play{position:absolute;bottom:14px;left:16px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;color:#0f0f0f;font-size:16px;cursor:pointer}
+.vp-bar{position:relative;height:10px;background:#3a3a3a;cursor:pointer}
+.vp-seg{position:absolute;top:2px;height:6px;border-radius:2px;cursor:pointer}.vp-seg:hover{top:0;height:10px}
+.vp-head{position:absolute;top:-4px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:#ff3d3d;box-shadow:0 0 0 2px #fff;pointer-events:none;z-index:2}
+.vp-ctrl{background:#0f0f0f;color:#ddd;font-size:13px;padding:8px 14px;border-radius:0 0 12px 12px;display:flex;gap:8px}
+.vp-title{font-size:17px;font-weight:600;margin:14px 0 8px}
+.vp-list{display:flex;flex-direction:column;gap:2px}
+.vp-row{display:grid;grid-template-columns:14px 52px 1fr auto;gap:10px;align-items:center;text-align:left;border:0;background:transparent;padding:7px 8px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;color:#1d1d2b}
+.vp-row:hover,.vp-row.on{background:#f2f0eb}.vp-dot{width:12px;height:12px;border-radius:3px}.vp-ts{color:#1f6f8b;font-variant-numeric:tabular-nums}.vp-len{color:#6b7280;font-size:13px}
+
+.dk-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:4px}
+.dk-tabs{display:flex;gap:6px}.dk-tab{font-family:inherit;font-size:13px;border:1px solid #d9d6cf;background:#fff;border-radius:16px;padding:5px 12px;cursor:pointer}
+.dk-tab.on{background:#1d1d2b;color:#fff;border-color:#1d1d2b}.dk-stat{font-size:14px}
+
+.cb-legend{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.cb-chip{font-family:inherit;font-size:13px;border:1px solid #e2dfd8;background:#fff;border-radius:16px;padding:4px 10px;cursor:pointer;color:#1d1d2b}
+.cb-chip b{font-weight:600;margin-left:3px}.cb-chip.on{border-color:#1d1d2b;background:#f4f2ee}
+.cb-sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.cb-head{display:flex;gap:28px;align-items:center;font-size:17px;color:#0f0f0f;margin:4px 0 12px}
+.cb-head span{font-size:14px;color:#606060}
+.cb-grid{display:grid;grid-template-columns:repeat(16,1fr);gap:4px}
+@media(max-width:900px){.cb-grid{grid-template-columns:repeat(14,1fr)}}
+@media(max-width:600px){.cb-grid{grid-template-columns:repeat(8,1fr)}}
+.cb{display:flex;gap:5px;height:30px;padding:5px 5px 3px;border-radius:4px;background:var(--t);transition:opacity .2s;overflow:hidden}
+.cb .av{flex:none;width:13px;height:13px;border-radius:50%;background:var(--c)}
+.cb .tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;padding-top:1px}
+.cb .tx b{display:block;height:4px;width:50%;border-radius:2px;background:#3f3f46;opacity:.7}
+.cb .tx b em{display:none}
+.cb .tx i{display:block;height:3px;width:85%;border-radius:2px;background:#bdb8ae}
+.cb .ft{display:flex;gap:3px;align-items:center;margin-top:1px}
+.cb .ft svg{width:5px;height:5px;fill:#a19d95}
+.cb.dim{opacity:.12}
+.cb-note{font-size:14px;margin-top:12px}
+.gq{font-family:inherit;color:#202124}
+.gq-bar{display:flex;align-items:center;gap:12px;border:1px solid #dfe1e5;border-radius:24px;padding:11px 18px;box-shadow:0 1px 6px rgba(32,33,36,.18);font-size:16px;max-width:640px}
+.gq-caret{color:#4285F4;animation:blink 1s step-end infinite}@keyframes blink{50%{opacity:0}}
+.gq-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.gq-chip{font-size:13px;font-family:inherit;border:1px solid #dadce0;border-radius:16px;padding:6px 12px;background:#fff;color:#3c4043;cursor:pointer}
+.gq-chip i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:7px}
+.gq-chip.on{border-color:var(--c);background:#f8f9fa;font-weight:500}
+.gq-card{border:1px solid #dadce0;border-radius:8px;padding:16px}
+.gq-row{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.gq-card{overflow:hidden}
+.gq-title{font-size:18px}.gq-sub{font-size:13px;color:#5f6368}
+.gq-num{text-align:right}.gq-num div:first-child{font-size:34px;font-weight:500}.gq-small{font-size:12px;color:#5f6368}
+.gq-meter{margin-top:14px}.gq-track{position:relative;height:14px;background:#f1f3f4;border-radius:7px;overflow:hidden}
+.gq-mde{position:absolute;top:0;bottom:0;background:#dadce0}.gq-val{position:absolute;top:3px;bottom:3px;border-radius:4px}
+.gq-legend{display:flex;gap:16px;font-size:12px;color:#5f6368;margin-top:6px}.sw{display:inline-block;width:12px;height:8px;border-radius:2px;margin-right:5px}
+.sw.val{background:#34A853}.sw.mde{background:#dadce0}
+body{background:#fff}.wrap{max-width:none;padding:2px 2px 6px}.card{border:0;padding:0;margin:0;border-radius:0}h2{margin-top:0}</style></head><body><div class="wrap"><div class="card" id="unusual"><h2>Could the result be luck?</h2><p class="kicker">Grey: the same analysis with every exam date moved. Diamond: the real dates.</p><div id="ri" style="height:330px"></div><script>Plotly.newPlot('ri',[{"type": "scatter", "mode": "markers", "x": [-0.000356, -0.000334, -0.000327, -0.000303, 0.000301, 0.000289, -0.000286, 0.000286, 0.000284, 0.000274, 0.000262, -0.000259, 0.000254, -0.000246, -0.000234, -0.000231, -0.000221, -0.000219, -0.000218, -0.000212, -0.000212, -0.000205, 0.000198, -0.000178, 0.000168, -0.000164, -0.000163, -0.000156, 0.000145, 0.000142, 0.000134, 0.000131, 0.00013, 0.000126, 0.00012, -0.00011, 0.000109, -0.000106, 0.000104, 0.000102, 9.8e-05, 9.7e-05, -9.7e-05, 9.6e-05, -9.5e-05, 9.5e-05, -8.9e-05, 8.9e-05, 8.8e-05, 8.6e-05, 8.5e-05, -8.4e-05, 8.4e-05, 8.1e-05, 8.1e-05, 8e-05, 7.9e-05, 7.8e-05, 7.7e-05, 7.7e-05, 7.7e-05, 7.6e-05, 7.5e-05, -7.4e-05, 7.3e-05, 7.3e-05, 7.2e-05, 6.6e-05, 6.5e-05, 6.4e-05, -6.2e-05, -5.9e-05, 5.9e-05, -5.3e-05, 4.5e-05, -4.5e-05, -4.5e-05, -4.4e-05, -4.4e-05, -4.2e-05, -4.2e-05, -4.2e-05, 4e-05, 4e-05, -4e-05, -3.9e-05, 3.6e-05, -3.4e-05, 3.2e-05, 3.1e-05, 3.1e-05, -2.8e-05, 2.7e-05, 2.7e-05, -2.6e-05, 2.5e-05, 2.4e-05, -2e-05, -2e-05, -1.9e-05, -1.9e-05, -1.5e-05, 1.5e-05, -1.4e-05, -1.1e-05, -8e-06, -7e-06, -6e-06, -5e-06, -5e-06, -4e-06, 2e-06], "y": [0.008, 0.315, -0.249, 0.314, -0.132, -0.054, 0.229, -0.064, 0.035, -0.331, 0.177, 0.027, -0.119, 0.202, -0.138, -0.033, -0.256, -0.068, -0.208, -0.166, 0.175, -0.154, -0.01, 0.337, 0.323, 0.157, 0.029, -0.156, -0.238, 0.329, 0.011, -0.269, 0.086, 0.194, 0.079, 0.292, -0.322, 0.02, -0.028, -0.306, 0.099, 0.247, 0.065, -0.168, 0.238, 0.007, 0.008, 0.177, -0.246, 0.224, 0.128, 0.201, -0.216, 0.212, -0.216, -0.293, 0.249, 0.253, 0.264, -0.02, -0.158, -0.345, 0.102, 0.154, 0.235, -0.153, -0.199, 0.098, 0.214, 0.325, -0.245, -0.012, 0.276, -0.054, 0.063, -0.333, 0.121, 0.293, 0.229, 0.27, 0.112, -0.178, 0.188, -0.202, 0.232, -0.306, 0.228, -0.235, -0.087, -0.128, 0.134, -0.225, -0.073, -0.346, -0.166, -0.055, -0.276, 0.093, -0.084, 0.158, 0.108, -0.048, 0.257, 0.092, 0.217, -0.111, 0.031, -0.213, 0.347, -0.18, -0.17, -0.299], "text": ["Shift of 69 weeks<br>estimate -0.00036", "Shift of 70 weeks<br>estimate -0.00033", "Shift of 71 weeks<br>estimate -0.00033", "Shift of 72 weeks<br>estimate -0.00030", "Shift of 61 weeks<br>estimate 0.00030", "Shift of 60 weeks<br>estimate 0.00029", "Shift of 73 weeks<br>estimate -0.00029", "Shift of 62 weeks<br>estimate 0.00029", "Shift of 63 weeks<br>estimate 0.00028", "Shift of 64 weeks<br>estimate 0.00027", "Shift of 65 weeks<br>estimate 0.00026", "Shift of 68 weeks<br>estimate -0.00026", "Shift of 59 weeks<br>estimate 0.00025", "Shift of 74 weeks<br>estimate -0.00025", "Shift of 19 weeks<br>estimate -0.00023", "Shift of 44 weeks<br>estimate -0.00023", "Shift of 45 weeks<br>estimate -0.00022", "Shift of 47 weeks<br>estimate -0.00022", "Shift of 20 weeks<br>estimate -0.00022", "Shift of 43 weeks<br>estimate -0.00021", "Shift of 46 weeks<br>estimate -0.00021", "Shift of 87 weeks<br>estimate -0.00020", "Shift of 58 weeks<br>estimate 0.00020", "Shift of 86 weeks<br>estimate -0.00018", "Shift of 66 weeks<br>estimate 0.00017", "Shift of 17 weeks<br>estimate -0.00016", "Shift of 18 weeks<br>estimate -0.00016", "Shift of 42 weeks<br>estimate -0.00016", "Shift of 57 weeks<br>estimate 0.00014", "Shift of 27 weeks<br>estimate 0.00014", "Shift of 79 weeks<br>estimate 0.00013", "Shift of 98 weeks<br>estimate 0.00013", "Shift of 78 weeks<br>estimate 0.00013", "Shift of 28 weeks<br>estimate 0.00013", "Shift of 100 weeks<br>estimate 0.00012", "Shift of 88 weeks<br>estimate -0.00011", "Shift of 39 weeks<br>estimate 0.00011", "Shift of 75 weeks<br>estimate -0.00011", "Shift of 38 weeks<br>estimate 0.00010", "Shift of 55 weeks<br>estimate 0.00010", "Shift of 99 weeks<br>estimate 0.00010", "Shift of 120 weeks<br>estimate 0.00010", "Shift of 41 weeks<br>estimate -0.00010", "Shift of 35 weeks<br>estimate 0.00010", "Shift of 85 weeks<br>estimate -0.00010", "Shift of 102 weeks<br>estimate 0.00009", "Shift of 21 weeks<br>estimate -0.00009", "Shift of 53 weeks<br>estimate 0.00009", "Shift of 101 weeks<br>estimate 0.00009", "Shift of 96 weeks<br>estimate 0.00009", "Shift of 52 weeks<br>estimate 0.00009", "Shift of 40 weeks<br>estimate -0.00008", "Shift of 121 weeks<br>estimate 0.00008", "Shift of 36 weeks<br>estimate 0.00008", "Shift of 26 weeks<br>estimate 0.00008", "Shift of 54 weeks<br>estimate 0.00008", "Shift of 97 weeks<br>estimate 0.00008", "Shift of 124 weeks<br>estimate 0.00008", "Shift of 122 weeks<br>estimate 0.00008", "Shift of 117 weeks<br>estimate 0.00008", "Shift of 34 weeks<br>estimate 0.00008", "Shift of 56 weeks<br>estimate 0.00008", "Shift of 119 weeks<br>estimate 0.00008", "Shift of 81 weeks<br>estimate -0.00007", "Shift of 123 weeks<br>estimate 0.00007", "Shift of 103 weeks<br>estimate 0.00007", "Shift of 95 weeks<br>estimate 0.00007", "Shift of 125 weeks<br>estimate 0.00007", "Shift of 29 weeks<br>estimate 0.00007", "Shift of 51 weeks<br>estimate 0.00006", "Shift of 108 weeks<br>estimate -0.00006", "Shift of 112 weeks<br>estimate -0.00006", "Shift of 118 weeks<br>estimate 0.00006", "Shift of 48 weeks<br>estimate -0.00005", "Shift of 31 weeks<br>estimate 0.00005", "Shift of 111 weeks<br>estimate -0.00004", "Shift of 91 weeks<br>estimate -0.00004", "Shift of 110 weeks<br>estimate -0.00004", "Shift of 22 weeks<br>estimate -0.00004", "Shift of 23 weeks<br>estimate -0.00004", "Shift of 128 weeks<br>estimate -0.00004", "Shift of 82 weeks<br>estimate -0.00004", "Shift of 32 weeks<br>estimate 0.00004", "Shift of 77 weeks<br>estimate 0.00004", "Shift of 109 weeks<br>estimate -0.00004", "Shift of 67 weeks<br>estimate -0.00004", "Shift of 126 weeks<br>estimate 0.00004", "Shift of 84 weeks<br>estimate -0.00003", "Shift of 94 weeks<br>estimate 0.00003", "Shift of 37 weeks<br>estimate 0.00003", "Shift of 104 weeks<br>estimate 0.00003", "Shift of 113 weeks<br>estimate -0.00003", "Shift of 33 weeks<br>estimate 0.00003", "Shift of 105 weeks<br>estimate 0.00003", "Shift of 83 weeks<br>estimate -0.00003", "Shift of 93 weeks<br>estimate 0.00003", "Shift of 25 weeks<br>estimate 0.00002", "Shift of 92 weeks<br>estimate -0.00002", "Shift of 24 weeks<br>estimate -0.00002", "Shift of 127 weeks<br>estimate -0.00002", "Shift of 106 weeks<br>estimate -0.00002", "Shift of 30 weeks<br>estimate -0.00002", "Shift of 116 weeks<br>estimate 0.00001", "Shift of 90 weeks<br>estimate -0.00001", "Shift of 49 weeks<br>estimate -0.00001", "Shift of 89 weeks<br>estimate -0.00001", "Shift of 50 weeks<br>estimate -0.00001", "Shift of 114 weeks<br>estimate -0.00001", "Shift of 115 weeks<br>estimate -0.00001", "Shift of 107 weeks<br>estimate -0.00000", "Shift of 80 weeks<br>estimate -0.00000", "Shift of 76 weeks<br>estimate 0.00000"], "hovertemplate": "%{text}<extra></extra>", "marker": {"size": 8, "color": "#6b7280", "opacity": 0.55}, "name": "112 false exam dates"}, {"type": "scatter", "mode": "markers+text", "x": [0.0004413933482892], "y": [0], "text": ["real dates"], "textposition": "top center", "marker": {"size": 18, "color": "#c8553d", "symbol": "diamond", "line": {"color": "#1d1d2b", "width": 1}}, "name": "Real exam dates", "hovertemplate": "Real estimate %{x:.5f}<extra></extra>"}],{"font": {"family": "IBM Plex Sans, Helvetica, Arial, sans-serif", "size": 13, "color": "#1d1d2b"}, "paper_bgcolor": "white", "plot_bgcolor": "white", "margin": {"l": 56, "r": 16, "t": 16, "b": 46}, "hoverlabel": {"font": {"family": "IBM Plex Sans, Helvetica, Arial, sans-serif"}}, "xaxis": {"title": "Estimated effect (extra events per district-week per applicant per 1,000 youth)", "zeroline": true, "zerolinecolor": "#1d1d2b", "gridcolor": "#eee"}, "yaxis": {"visible": false, "range": [-0.8, 0.8]}, "legend": {"orientation": "h", "y": -0.3}, "height": 330, "annotations": [{"x": 0.0004413933482892, "y": 0.62, "text": "Only 0% of false dates give an effect this large (p = 0.009)", "showarrow": false, "font": {"color": "#c8553d"}}]},{responsive:true,displaylogo:false});</script><p class="note">All nine dates moved together by the same number of weeks. ACLED; Census 2011.</p></div></div><script>(function(){var last=0;
+function s(){var w=document.querySelector('.wrap');if(!w)return;var h=Math.ceil(w.getBoundingClientRect().height)+8;
+if(Math.abs(h-last)<3)return;last=h;parent.postMessage({wsFig:'unusual',h:h},'*');}
+window.addEventListener('load',s);window.addEventListener('resize',s);
+if(window.ResizeObserver)new ResizeObserver(s).observe(document.querySelector('.wrap')||document.body);setTimeout(s,800);})();</script></body></html>
