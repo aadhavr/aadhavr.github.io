@@ -52,12 +52,12 @@ I’ll break down how I arrived at these conclusions.
 
 ## 1. Exam leaks put people protesting on the street
 
-I followed nine exam leaks between 2023 and 2026, from Gujarat's junior clerk exam to the UP police constable exam that 48 lakh people applied for[^upapps]. In the state that ran each exam, protests about exams jump in the first two weeks after the exam date ($\hat\beta = 0.00045$ protests per district-week per applicant per 1,000 youth; cluster $p = 0.018$, randomisation $p = 0.048$; 9 shocks, 640 districts, weeks $-8$ to $+8$). Elsewhere in India, nothing changes.[^placebo]
+I followed nine exam leaks between 2023 and 2026, from Gujarat's junior clerk exam to the UP police constable exam that 48 lakh people applied for[^upapps]. In the state that ran each exam, protests about exams jump in the first two weeks after the exam date ($\hat\beta = 0.00045$ protests per district-week per applicant per 1,000 youth; cluster $p = 0.018$, randomisation $p = 0.048$; 9 shocks, 640 districts, weeks $-8$ to $+8$). Elsewhere in India, protest barely changes.[^placebo]
 
 
 The protest data come from ACLED, the Armed Conflict Location & Event Data project, which records every reported protest in India from news sources, with a date, a district and a short description written by its coders.[^acled] I keep the protests about a specific recruitment, entrance or licensing exam: a keyword filter first, then a language model applied a fixed written rule, checked against hand labels.[^classifier] That leaves 2,450 exam protests in 640 districts (Census 2011 boundaries), from January 2023 to September 2026.
 
-The nine leaks are the shocks.[^shocks] For each one I measure how exposed each district is: $A_{de}$, the number of applicants to exam $e$ per 1,000 residents of district $d$ aged 15-29,[^census] which is zero outside the state that ran the exam. I then compare districts with more and less exposure, week by week, around the exam date, in a stacked event study:
+The nine leaks are the shocks.[^shocks] For each one I measure how exposed each district is: $A_{de}$, the number of applicants to exam $e$ per 1,000 residents of district $d$ aged 15-29,[^census] which is zero outside the state that ran the exam.[^neet] I then compare districts with more and less exposure, week by week, around the exam date, in a stacked event study:
 
 $$
 y_{dt} = \sum_{k \neq -1} \beta_k \, A_{de} \, \mathbf{1}[t - T_e = k] + \alpha_{de} + \gamma_{te} + \varepsilon_{dt}
@@ -79,31 +79,26 @@ Treatment varies across only six exposed states and one national exam, so standa
 
 The clearest case is Uttarakhand in 2025. In the week after the leak, exam protests went from almost none to about 13 per 10 million young people[^uk], while the rest of the country stayed flat. For the UP constable leak, the average effect means roughly 16 extra protests across the state in the two months after the exam (1.77 a week, 95% CI 0.22 to 3.33, against a baseline of 0.25 a week)[^up16], in a state that normally sees almost none.
 
-
-NEET-UG is a national exam, so no single state is exposed. What varies is how many candidates each state has per young person, and that is the variation the design uses for it.[^neet]
-
-So who is on the street? As you may expect, there are political parties organizing, but not as many as you’d think. About 40% of exam protests in the data are organised by a party or its youth wing (1,035 of 2,450, or 42%)[^party], but their protests don't rise more in the places where more people took the exam that leaked (party-led: $\hat\beta = 0.00014$, cluster $p = 0.11$, randomisation $p = 0.27$; non-party: $\hat\beta = 0.00045$, cluster $p = 0.018$, randomisation $p = 0.048$). 
+So who is out protesting? As you may expect, there are political parties organizing, but not as many as you’d think. About 40% of exam protests in the data are organised by a party or its youth wing (1,035 of 2,450, or 42%)[^party], but their protests don't rise more in the places where more people took the exam that leaked (party-led: $\hat\beta = 0.00014$, cluster $p = 0.11$, randomisation $p = 0.27$).
 
 The protests that do follow the candidates are the rest, the ones led by aspirants, students and their unions. That holds even if I count the student unions with party links as party protests (non-party, broad definition: $\hat\beta = 0.00041$, randomisation $p = 0.048$). The data can't confirm that each protester sat the exam, but the response to a leak comes from where the candidates live, and from groups that describe themselves as students and aspirants.[^robust]
 
 
 ## 2. Protests appear to be predominantly male, but not only because fewer women protest
 
-In the 2023 World Values Survey, 11% of Indian women said they had ever attended a demonstration, against 27% of men (men 27.0%, women 11.1%, weighted; a gap of 15.0 points, robust $p < 0.001$, $n = 1{,}197$; among 18-29-year-olds, men 24.8% and women 8.9%)[^wvs]. Self-reports about protest of any kind are only a rough guide to who turns up at exam protests, but they suggest women are a minority there, perhaps around three in ten.[^threeinten]
+In the 2023 World Values Survey, 11% of Indian women said they had ever attended a demonstration, against 27% of men (a gap of 15.0 points, robust $p < 0.001$, $n = 1{,}197$; among 18-29-year-olds, men 24.8% and women 8.9%)[^wvs]. Self-reports about protest of any kind are only a rough guide to who turns up at exam protests, but they suggest women are a minority there, perhaps around three in ten.[^threeinten]
 
 ```{=html}
 <iframe class="ws-fig" data-fig="surveys" src="figures/surveys.html" title="Men and women, in their own words" style="height:400px" loading="lazy"></iframe>
 ```
 
-ACLED's descriptions are short summaries its coders write from news reports. I search them with fixed word lists: a report mentions women if it uses "women," "woman," "female," "girl(s)," "mahila" or "ladies"; it is sex-neutral if it describes people only with words such as "students," "aspirants," "candidates" or "youth" and uses no gendered word.[^regex]
-
-The record, though, seems to go further than the street. Only 2% of ACLED reports on exam protests mention women at all, against 11% of ACLED reports on all protests (2.1% against 11.0% of all 86,500 events; 95% intervals in the figure below), and the gap holds within the same news outlets (exam minus other reports from the same source: $-8.4$ points, 95% CI $-9.9$ to $-7.4$; 32 sources, 2,516 exam reports)[^source]. When a report does say who protested, 96% of the time it uses a word with no sex: "students," "aspirants" or "candidates" (96.3%, 95% CI 95.3 to 97.2, of the 1,526 exam reports that name any kind of person; 44.2% for other events).[^neutral] It’s worth noting that these reports are coders' summaries of the news, so they tell us about the record, not directly about the crowd.
+But the protest records seem to make the gap look bigger than it is. Only 2% of ACLED reports on exam protests mention women at all[^regex], against 11% of ACLED reports on all protests (of 86,500 events; 95% intervals in the figure below), and the gap holds within the same news outlets (exam minus other reports from the same source: $-8.4$ points, 95% CI $-9.9$ to $-7.4$; 32 sources, 2,516 exam reports)[^source]. When a report does say who protested, 96% of the time it uses a word with no sex: "students," "aspirants" or "candidates" (96.3%, 95% CI 95.3 to 97.2, of the 1,526 exam reports that name any kind of person; 44.2% for other events).[^neutral] It's worth noting that these reports are coders' summaries of the news, so the reports reflect how coders and news outlets describe protests.
 
 ```{=html}
 <iframe class="ws-fig" data-fig="reports" src="figures/reports.html" title="How exam protests get reported" style="height:380px" loading="lazy"></iframe>
 ```
 
-Court records are one place where people have to be named, so I looked at who files exam-related cases. About a third of petitioners in exam-related court cases are women (33% of first petitioners whose sex can be identified, among 6,821 orders matching exam terms)[^courts], close to their 32% share of the UP constable applicant pool[^up32]. Petitioners aren't protesters, so this doesn't tell us who is on the street, but it fits a picture in which women are present while less visible than men.
+Court records are one place where people have to be named, so I looked at who files exam-related cases. About a third of petitioners in exam-related court cases are women (33% of first petitioners whose sex can be identified, among 6,821 orders matching exam terms)[^courts], close to their 32% share of the UP constable applicant pool[^up32]. Petitioners aren't protesters, so this doesn't tell us who is on the street, but it suggests women are present while less visible than men.
 
 ```{=html}
 <iframe class="ws-fig" data-fig="women" src="figures/women.html" title="Where are the women?" style="height:540px" loading="lazy"></iframe>
@@ -115,7 +110,7 @@ I also wanted to note that exam protests meet police intervention or force more 
 
 Google Trends gives a relative search index by state and week. I pulled 19 terms in five groups, each in the same request as a fixed anchor term ("weather") so that they share a scale, and ran the same event-study design at the state level on log(term/anchor), for 2023 to 2025.[^trends] A null result only means something if the test could have found an effect, so the design includes a positive control, searches about the leak itself, and reports a minimum detectable effect: the 95th percentile of the estimates from fake exam dates.
 
-If frustrated young men were turning their anger on women, a leak should leave some trace online. After a leak, searches for "paper leak" rise by about 5% in the affected state (+4.7%, randomisation $p = 0.018$; smallest detectable change 1.5%), so the method can see a local reaction. Searches for manosphere, men's-rights and women's-quota terms barely move. None rises by more than 1%, and men's-rights searches actually dip slightly (manosphere: +0.9%, randomisation $p = 0.31$, smallest detectable change 2.8%; women and jobs: +0.3%, $p = 0.20$, smallest detectable 0.6%; men's rights: $-0.2\%$, $p = 0.018$; all groups combined: +0.4%, $p = 0.25$).[^mra] For the manosphere terms, the test could have picked up a rise of about 3%, so I can rule out a large spillover, but not a small one.
+If frustrated young men were turning their anger on women, a leak should leave some trace online. After a leak, searches for "paper leak" rise by about 5% in the affected state (+4.7%, randomisation $p = 0.018$; smallest detectable change 1.5%), so the method can see a local reaction. Searches for manosphere, men's-rights and women's-quota terms barely move. None rises by more than 1%, and men's-rights searches actually dip slightly (manosphere: +0.9%, randomisation $p = 0.31$, smallest detectable change 2.8%; men's rights: $-0.2\%$, $p = 0.018$).[^mra] For the manosphere terms, the test could have picked up a rise of about 3%, so I can rule out a large spillover, but not a small one.
 
 ```{=html}
 <iframe class="ws-fig" data-fig="search" src="figures/search.html" title="What people search for after a leak" style="height:900px" loading="lazy"></iframe>
@@ -129,13 +124,13 @@ In 28,000 YouTube comments on videos about leaks and protests, blame goes to exa
 <iframe class="ws-fig" data-fig="comments" src="figures/comments.html" title="Who do YouTube commenters blame?" style="height:1150px" loading="lazy"></iframe>
 ```
 
-And the attitude at the heart of the backlash story, that men should come first when jobs are scarce, is not a young man's grievance. In Pew's 2019-20 India survey, 83% of men and 81% of women agreed with it, and young men were no more likely to agree than older men (weighted, $n = 28{,}868$; women agree 2.3 points less than men, robust $p = 0.002$; young adults are no more likely to agree, $p = 0.14$; the gender gap among the young is no larger, $p = 0.14$)[^pew].
+The backlash story also assumes that believing men should get jobs first is mostly a young men's thing, but the surveys don't show that. In Pew's 2019-20 India survey, 83% of men and 81% of women agreed with it, and young men were no more likely to agree than older men (weighted, $n = 28{,}868$; women agree 2.3 points less than men, robust $p = 0.002$; young adults are no more likely to agree, $p = 0.14$; the gender gap among the young is no larger, $p = 0.14$)[^pew].
 
 ## Conclusions
 
-The young men in the photographs are real, but the photographs may exaggerate them. Exam leaks consistently put aspirants on the street. Women appear to be a minority of that street, and the record then seems to turn the whole crowd into "aspirants," which many readers may hear as male[^peoplemen]. What I could not find is the spillover I set out to test. If there is a gender story in India's exam crisis, it may be less about male rage than about whose frustration gets seen.
+So, back to the question I started with. Exam leaks consistently get people protesting, and pretty quickly after the exam. It is mostly students and aspirants, not party members. Women appear to be a smaller share of these crowds, though some of that is probably from how protests get written up. And I didn't find the manosphere spillover I set out to test. Google searches seem to have barely moved, and almost nobody in the YouTube comments blamed women. 
 
-Exam protests meet intervention or force more than twice as often as other protests, which may raise the cost of protest most for those already least present, including women. Ultimately, I find no evidence that leaks feed gendered online resentment. And the belief that men should come first for jobs is not a young man's grievance: in Pew's survey, women hold it almost as often as men (83% and 81%). The World Values Survey shows a wider gap (64% and 52%), but in both surveys about half or more of women agree, and young men are no more likely to agree than older men.
+Exam protests get police intervention more than twice as often as other protests, and if that keeps some women home, it would make the crowds look more male than the people affected by the leak. The surveys also cut against the backlash story: the idea that men should get jobs first is held by women almost as often as men in Pew's data, and young men aren't more likely to agree than older men.
 
 ## How I arrived at these findings
 
@@ -172,11 +167,7 @@ $\alpha_{de}$ are district-by-shock fixed effects and $\gamma_{te}$ week-by-shoc
 
 Absent the leak, exam protest in high- and low-exposure districts would have moved together. Supported by flat pre-trends (linear pre-slope $p = 0.16$) and by the pre-period-only trend check. Week 0 is the exam date, fixed months in advance. The cancellation date is endogenous: with it as week 0, the peak falls in weeks -1 and 0, consistent with protest causing cancellation. I switched to the exam date after seeing this pattern. Protest by aspirants from exposed states in other states (e.g. Delhi) would bias the estimate toward zero. Exposure varies only across states, and within states by imputed youth population, so the estimate is best read as an average effect of exposure intensity across shocks, which requires stronger assumptions than a binary DiD.
 
-### A3. Inference
-
-Treatment varies across six exposed states plus one national shock, so CRV1 standard errors are reported only as indicative. The headline p-value is randomisation inference: all shock dates are shifted together by every eligible number of weeks (164 shifts on 2023-2026 data), preserving the spacing and overlap between shocks, and p is the share of shifts with an estimate at least as large in absolute value (minimum attainable about 0.006). An earlier version that drew independent false dates per shock produced false positives on simulated null data and was replaced. The test is conservative when false windows land on real, unlisted protest waves.
-
-### A4. Main estimates
+### A3. Main estimates
 
 | Outcome | Data | $\hat\beta$ | Cluster $p$ | Randomisation $p$ |
 |---|---|---|---|---|
@@ -187,7 +178,7 @@ Treatment varies across six exposed states plus one national shock, so CRV1 stan
 
 Units: events per district-week per applicant per 1,000 youth.
 
-### A5. Robustness (non-party outcome, 2023-2026)
+### A4. Robustness (non-party outcome, 2023-2026)
 
 | Check | $\hat\beta$ | $p$ |
 |---|---|---|
@@ -203,7 +194,7 @@ Units: events per district-week per applicant per 1,000 youth.
 
 The full-window trend specification overstates the effect because the trend absorbs the post-spike fade; the pre-period-only version is preferred.
 
-### A6. Measurement
+### A5. Measurement
 
 I measure exam protests with a keyword prefilter on ACLED event descriptions, then Claude Haiku applies a fixed written rule (a specific recruitment, entrance or licensing exam, or a specific recruitment process; excluding general unemployment, recruitment policy, demands by current employees, job-compensation promises, and university or school exams). Rule refined on 200 hand-labelled events (agreement 0.99, κ = 0.975, optimistic); on 50 fresh events, 92% agreement with an independent, locally run model (κ = 0.83) and 48 of 50 correct after hand resolution.
 
@@ -211,11 +202,11 @@ For party-led protests, ACLED actor fields are matched against a fixed list of p
 
 To find mentions of women or sex-neutral wording, I use regular expressions on ACLED's coder-written summaries, not original articles.
 
-### A7. Deviations, multiple testing and primary tests
+### A6. Deviations, multiple testing and primary tests
 
-Three choices were made after seeing data: the exam date as week 0 (see A2), the calendar-shift randomisation (see A3), and the party split, introduced when extending the data to 2026 weakened the combined estimate; the largest false-date estimates traced to a July 2026 wave of Samajwadi Party and Congress protests in Uttar Pradesh. All versions are reported. Primary tests: the non-party event study, the Google Trends test with its positive control, and the survey protest gap. Everything else is secondary or exploratory; with this many tests, some p-values near 0.05 should be expected by chance.
+Three choices were made after seeing data: the exam date as week 0 (see A2), the calendar-shift randomisation (see Section 1), and the party split, introduced when extending the data to 2026 weakened the combined estimate; the largest false-date estimates traced to a July 2026 wave of Samajwadi Party and Congress protests in Uttar Pradesh. All versions are reported. Primary tests: the non-party event study, the Google Trends test with its positive control, and the survey protest gap. Everything else is secondary or exploratory; with this many tests, some p-values near 0.05 should be expected by chance.
 
-### A8. Methods for parts 2 and 3
+### A7. Methods for parts 2 and 3
 
 For court data, I use the Indian High Court and Supreme Court judgments metadata (Dattam Labs, AWS Open Data Registry, CC BY 4.0); 6,821 orders matching exam terms, dated by filing; petitioner sex by LLM (95.5% agreement with a second model; precision 0.97 and recall 1.00 against a third); state-level event study with a 26-week window (RI $p = 0.013$); driven mainly by UP constable (without it, RI $p = 0.17$).
 
@@ -227,9 +218,9 @@ I also use WVS Wave 7 India (2023, n = 1,692; protest item Q209, jobs item Q33 o
 
 For Bangladesh and Nepal, I also use ACLED; single dated shocks (5 June 2024; 8 September 2025) compared with all other windows; descriptive.
 
-### A9. Data, credits and reproducibility
+### A8. Data, credits and reproducibility
 
-ACLED (acleddata.com) event data are not redistributed; figures show aggregates. District boundaries: DataMeet. Population: Census of India 2011. Large language models were used to classify text, as described in A6 and A8. Code is available in the repository linked at the top; data access instructions are in its README.
+ACLED (acleddata.com) event data are not redistributed; figures show aggregates. District boundaries: DataMeet. Population: Census of India 2011. Large language models were used to classify text, as described in A5 and A7. Code is available in the repository linked at the top; data access instructions are in its README.
 
 [^talk]: Event announcement: <https://www.instagram.com/p/Ddp8tqkEQdM/>.
 
@@ -241,13 +232,13 @@ ACLED (acleddata.com) event data are not redistributed; figures show aggregates.
 
 [^acled]: Armed Conflict Location & Event Data (ACLED), <https://acleddata.com>. Raleigh, C., Kishi, R. and Linke, A. (2023), "Political instability patterns are obscured by conflict dataset scope conditions, sources, and coding choices," *Humanities and Social Sciences Communications* 10, 74. In line with ACLED's terms, this post shows only aggregates, not event-level data.
 
-[^classifier]: The rule keeps protests about a specific recruitment, entrance or licensing exam, or a specific recruitment process, and drops protests about general unemployment, recruitment policy, demands by current employees and university or school exams. The model is Claude Haiku. On 50 events held out from rule development, it agreed with an independent model on 92% ($\kappa = 0.83$) and was right on 48 of 50 after hand resolution. Details in appendix A6.
+[^classifier]: The rule keeps protests about a specific recruitment, entrance or licensing exam, or a specific recruitment process, and drops protests about general unemployment, recruitment policy, demands by current employees and university or school exams. The model is Claude Haiku. On 50 events held out from rule development, it agreed with an independent model on 92% ($\kappa = 0.83$) and was right on 48 of 50 after hand resolution. Details in appendix A5.
 
 [^shocks]: Leaks with a dated exam, a cancellation or official admission of the leak, and published applicant counts, found in GDELT daily event files and verified against official notices or independent news reports. No shock was taken from the protest data. NEET-UG 2024, which leaked but was not cancelled, is the placebo. The full list is in appendix A1.
 
 [^census]: Census of India 2011 (district populations aged 15-29); district boundaries from DataMeet. Within a state, applicants are spread across districts by youth population, because no exam body publishes applicants by district.
 
-[^week0]: With the cancellation date as week 0, the peak falls in weeks $-1$ and 0, which is what you would expect if protest helped cause the cancellation. I switched to the exam date after seeing this pattern; see appendix A7.
+[^week0]: With the cancellation date as week 0, the peak falls in weeks $-1$ and 0, which is what you would expect if protest helped cause the cancellation. I switched to the exam date after seeing this pattern; see appendix A6.
 
 [^ri]: Shifting all dates together keeps the spacing and overlap between the shocks. The smallest attainable $p$ is about 0.006. An earlier version that drew a separate fake date for each shock produced false positives on simulated null data and was replaced. The test is conservative when a fake window lands on a real protest wave that is not in the shock list.
 
@@ -259,15 +250,15 @@ ACLED (acleddata.com) event data are not redistributed; figures show aggregates.
 
 [^neet]: For NEET-UG, $A_{de}$ is the state's NTA registrations per 1,000 residents aged 15-29, spread across districts by youth population. A national wave that lifts every state equally is absorbed by the week-by-shock fixed effects and does not move the estimate.
 
-[^party]: Party-led means a party or its adult youth wing (such as the Indian Youth Congress or BJYM) appears in ACLED's actor fields. Student unions such as NSUI and ABVP are not counted as party-led in the main definition. I introduced this split after extending the data to 2026 weakened the combined estimate (all exam protests: $\hat\beta = 0.00050$, cluster $p = 0.026$, randomisation $p = 0.085$); the largest fake-date estimates traced to a July 2026 wave of Samajwadi Party and Congress protests in Uttar Pradesh. See appendix A7.
+[^party]: Party-led means a party or its adult youth wing (such as the Indian Youth Congress or BJYM) appears in ACLED's actor fields. Student unions such as NSUI and ABVP are not counted as party-led in the main definition. I introduced this split after extending the data to 2026 weakened the combined estimate (all exam protests: $\hat\beta = 0.00050$, cluster $p = 0.026$, randomisation $p = 0.085$); the largest fake-date estimates traced to a July 2026 wave of Samajwadi Party and Congress protests in Uttar Pradesh. See appendix A6.
 
-[^robust]: The non-party estimate holds with an 8-week state election window ($\hat\beta = 0.00045$, randomisation $p = 0.048$), with district traits interacted with the post period ($\hat\beta = 0.00048$, $p = 0.036$), and with a state trend estimated on the pre-period only ($\hat\beta = 0.00073$, cluster $p < 0.001$). It does not hold with a broad keyword outcome in place of the classifier ($\hat\beta = 0.00016$, randomisation $p = 0.41$). Full table in appendix A5.
+[^robust]: The non-party estimate holds with an 8-week state election window ($\hat\beta = 0.00045$, randomisation $p = 0.048$), with district traits interacted with the post period ($\hat\beta = 0.00048$, $p = 0.036$), and with a state trend estimated on the pre-period only ($\hat\beta = 0.00073$, cluster $p < 0.001$). It does not hold with a broad keyword outcome in place of the classifier ($\hat\beta = 0.00016$, randomisation $p = 0.41$). Full table in appendix A4.
 
 [^wvs]: World Values Survey Wave 7, India. Haerpfer, C. et al. (eds.), *World Values Survey: Round Seven, Country-Pooled Datafile*, JD Systems Institute and WVSA Secretariat. Item Q209: "attending peaceful demonstrations," answer "have done." Weighted shares; the gap is from a weighted linear probability model with region fixed effects and robust standard errors (8 regions are too few to cluster on).
 
 [^threeinten]: $11.1 / (11.1 + 27.0) = 29\%$, assuming equal numbers of men and women. The item covers any demonstration, not exam protests.
 
-[^regex]: The descriptions are coders' summaries, not the original articles. A report can use a gendered word without describing the protesters, so these are measures of the record, not counts of people.
+[^regex]: I search ACLED's descriptions with fixed word lists: a report mentions women if it uses "women," "woman," "female," "girl(s)," "mahila" or "ladies"; it is sex-neutral if it describes people only with words such as "students," "aspirants," "candidates" or "youth" and uses no gendered word. The descriptions are coders' summaries, not the original articles. A report can use a gendered word without describing the protesters, so these are measures of the record, not counts of people.
 
 [^source]: Same-source comparison: for each news source with at least 10 exam and 10 other events, the share of exam reports mentioning women minus the share of its other reports, averaged with weights equal to its number of exam events; 95% interval from 2,000 bootstrap draws over sources.
 
@@ -281,12 +272,10 @@ ACLED (acleddata.com) event data are not redistributed; figures show aggregates.
 
 [^trends]: Google Trends, weekly, by state. Terms were in five groups: a positive control (searches about the leak), manosphere, men's rights, gender and jobs, and Hindi-script terms. The Hindi-script terms were added after the first null and returned too little volume to use. The Trends data end in 2025, so NEET-UG 2026 is not in this test. Google Trends is a trademark of Google LLC; this post is not affiliated with Google.
 
-[^mra]: Men's-rights searches fall very slightly after a leak. The change is small and in the opposite direction from the backlash hypothesis. Percent changes are at the average exposure across leaks; randomisation uses 112 date shifts on the 2023-2025 data (smallest attainable $p$ about 0.009). Hindi-script terms returned no usable data.
+[^mra]: The other groups: searches about women and jobs rise by 0.3% (randomisation $p = 0.20$, smallest detectable change 0.6%), and all groups combined rise by 0.4% ($p = 0.25$). Men's-rights searches fall very slightly after a leak; the change is small and in the opposite direction from the backlash hypothesis. Percent changes are at the average exposure across leaks; randomisation uses 112 date shifts on the 2023-2025 data (smallest attainable $p$ about 0.009). Hindi-script terms returned no usable data.
 
 [^yt]: YouTube Data API; 28,121 comments. The labels were checked on a small hand-coded sample only. No comment text or usernames are shown or stored in the published data.
 
 [^ytwomen]: An upper bound: a hand check did not confirm the comments flagged as blaming women. Manosphere framing rises by 0.07 points from a base of 0.05% (randomisation $p = 0.044$); with this many tests I treat it as exploratory.
 
 [^pew]: Pew Research Center, India survey, fieldwork 17 November 2019 to 23 March 2020, 29,999 adults. Shares are weighted, exclude "don't know" answers, and count "completely" or "mostly" agree. Pew's own report, which keeps "don't know" in the base, gives 80% of all adults agreeing and 56% agreeing completely (59% of men and 54% of women): [Pew Research Center, 2022](https://www.pewresearch.org/religion/2022/03/02/views-on-womens-place-in-society/). Exact shares here: men 83.4%, women 80.5%, men 18-25 82.4%, women 18-25 77.6%. Young means Pew's youngest age band; the public file has no employment variable, so "young men without work" cannot be tested. Robust standard errors (4 usable state clusters).
-
-[^peoplemen]: On generic words for people being read as male, see Bailey, A. H., Williams, A. and Cimpian, A. (2022), "Based on billions of words on the internet, PEOPLE = MEN," *Science Advances* 8(13), eabm2463.
